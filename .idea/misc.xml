@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/drawable/dot_onboard_unactive_view.xml" value="0.2" />
+        <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/drawable/dot_onboard_view.xml" value="0.2" />
+        <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/drawable/primary_button.xml" value="0.2" />
+        <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/activity_login.xml" value="0.22" />
+        <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/activity_on_boarding.xml" value="0.2" />
+        <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/activity_splash_screen.xml" value="0.12771739130434784" />
+        <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/slide_layout.xml" value="0.2" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
