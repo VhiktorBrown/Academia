@@ -20,11 +20,15 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Your Assignment"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:textAlignment="gravity"
+        android:gravity="center"
         android:textColor="@color/darkTextColor"
         android:fontFamily="@font/poppins_semi_bold"
         android:textSize="@dimen/_16ssp"
