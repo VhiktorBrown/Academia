@@ -3,8 +3,12 @@
     <color name="primary">#1c588c</color>
     <color name="secondary">#fafafa</color>
     <color name="textColor">#2f2f2f</color>
+    <color name="textColor2">#808080</color>
     <color name="darkTextColor">#393939</color>
-    <color name="backgroundLight">#a5bbce</color>
+    <color name="backgroundLight">#2f6594</color>
     <color name="textHeading">#8a8a8a</color>
+    <color name="closeToPrimary">#BACEE0</color>
+    <color name="chat_in_background">#e4ddd4</color>
+    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 </resources>

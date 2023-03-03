@@ -25,15 +25,15 @@ public class OnboardScreenPagerAdapter extends PagerAdapter {
     };
 
     public String[] slide_titles = {
-            "Get Your Assignments Done",
+            "Never Forget Your Assignments",
             "Communicate with your Course mates",
-            "Access To Your TimeTable"
+            "Important Announcements"
     };
 
     public String[] slide_description = {
-            "Get to see your assignments in one place.",
-            "Ask questions and chat with your course mates.",
-            "Know your schedule and prepare accordingly."
+            "'I forgot to do my assignment' No Be For Here.",
+            "Ask questions and chat privately with your course mates.",
+            "Get important announcements at your fingertip and stay up to date."
     };
 
     @Override

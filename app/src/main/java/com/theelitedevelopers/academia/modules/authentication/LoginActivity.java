@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.theelitedevelopers.academia.MainActivity;
+import com.theelitedevelopers.academia.modules.main.MainActivity;
 import com.theelitedevelopers.academia.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {

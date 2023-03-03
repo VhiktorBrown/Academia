@@ -46,6 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:textAlignment="gravity"
         android:gravity="center_horizontal"
         android:textSize="@dimen/_14ssp" />

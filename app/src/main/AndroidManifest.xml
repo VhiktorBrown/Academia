@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Academia">
         <activity
+            android:name=".modules.main.chat.ChatActivity"
+            android:exported="true" />
+        <activity
             android:name=".modules.splashscreen.SplashScreen"
             android:exported="true">
             <intent-filter>
@@ -25,8 +28,8 @@
             android:name=".modules.onboarding.OnBoardingActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true"/>
+            android:name=".modules.main.MainActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
