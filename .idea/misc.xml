@@ -14,11 +14,15 @@
         <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/drawable/primary_button.xml" value="0.2" />
         <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/drawable/send_message_layout.xml" value="0.2" />
         <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/drawable/student_details_background.xml" value="0.2" />
+        <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/activity_announcements.xml" value="0.18" />
+        <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/activity_assignments.xml" value="0.11639492753623189" />
         <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/activity_chat.xml" value="0.12771739130434784" />
         <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/activity_main.xml" value="0.21" />
         <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/activity_on_boarding.xml" value="0.2" />
         <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/activity_splash_screen.xml" value="0.12771739130434784" />
+        <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/announcement_layout.xml" value="0.22" />
+        <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/assignment_item.xml" value="0.22" />
         <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/assignment_layout.xml" value="0.2" />
         <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/chat_in_layout.xml" value="0.12771739130434784" />
         <entry key="..\:/Users/VICTOR/AndroidStudioProjects/Academia/app/src/main/res/layout/chat_layout.xml" value="0.2" />

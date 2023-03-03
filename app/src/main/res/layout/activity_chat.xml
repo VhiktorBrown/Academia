@@ -39,7 +39,7 @@
         app:layout_constraintTop_toTopOf="@+id/inbox_image"
         app:layout_constraintBottom_toBottomOf="@+id/inbox_image"
         android:layout_marginStart="@dimen/_10sdp"
-        android:fontFamily="@font/montserrat_semi_bold"
+        android:fontFamily="@font/poppins_semi_bold"
         android:textSize="@dimen/_14ssp" />
 
     <View
