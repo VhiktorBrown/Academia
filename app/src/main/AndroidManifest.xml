@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Academia">
         <activity
-            android:name=".modules.main.home.AssignmentsActivity"
+            android:name=".modules.main.home.assignments.AssignmentsActivity"
             android:exported="true" />
         <activity
             android:name=".modules.main.home.announcements.AnnouncementsActivity"

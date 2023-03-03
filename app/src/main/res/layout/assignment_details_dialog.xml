@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/_15sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
@@ -10,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:elevation="@dimen/_10sdp"
@@ -29,17 +28,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@color/green_600"/>
+                android:background="@color/light_blue_900"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/image_cardView"
-                android:layout_width="@dimen/_40sdp"
+                android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_20sdp"
                 app:cardBackgroundColor="@android:color/transparent"
                 android:outlineSpotShadowColor="@android:color/transparent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/top_view"
-                android:layout_marginStart="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/course_code"
+                app:layout_constraintBottom_toBottomOf="@+id/course_code"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 app:cardCornerRadius="@dimen/_2sdp"
@@ -55,14 +55,27 @@
 
             </androidx.cardview.widget.CardView>
 
+            <ImageView
+                android:id="@+id/go_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/textColor"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:contentDescription="@string/go_back"/>
+
             <TextView
                 android:id="@+id/course_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CSC 421"
-                app:layout_constraintStart_toEndOf="@+id/image_cardView"
-                app:layout_constraintTop_toTopOf="@+id/image_cardView"
-                android:layout_marginStart="@dimen/_10sdp"
+                app:layout_constraintStart_toEndOf="@+id/go_back"
+                app:layout_constraintTop_toTopOf="@+id/go_back"
+                app:layout_constraintBottom_toBottomOf="@+id/go_back"
+                android:layout_marginStart="@dimen/_20sdp"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:textColor="@color/textColor"
                 android:textSize="@dimen/_14ssp" />
@@ -72,14 +85,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Object Oriented Programming"
-                app:layout_constraintTop_toBottomOf="@+id/image_cardView"
-                app:layout_constraintStart_toStartOf="@+id/image_cardView"
-                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@+id/course_code"
+                app:layout_constraintStart_toStartOf="@+id/go_back"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/textColor2"
                 android:textSize="@dimen/_10ssp" />
 
-            <View
+         <!--   <View
                 android:id="@+id/view_after_course_title"
                 android:layout_width="match_parent"
                 android:layout_height="0.1dp"
@@ -87,16 +100,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/course_title"
-                android:background="@color/textColor" />
+                android:background="@color/textColor" />-->
 
             <TextView
                 android:id="@+id/assignment_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Write about OOP caracteristics"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/go_back"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_after_course_title"
+                app:layout_constraintTop_toBottomOf="@+id/course_title"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
@@ -108,13 +121,15 @@
 
             <TextView
                 android:id="@+id/lecturer"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Prof. Anibogu"
+                app:layout_constraintEnd_toStartOf="@+id/assignment_due_date"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/assignment_title"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 android:textAlignment="gravity"
                 android:gravity="start"
                 android:fontFamily="@font/poppins_regular"
@@ -128,24 +143,42 @@
                 android:id="@+id/assignment_due_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="15-08-2023 20 days left"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lecturer"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:text="15-08-2023"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/lecturer"
+                android:layout_marginEnd="@dimen/_20sdp"
                 android:textAlignment="gravity"
                 android:gravity="start"
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/textColor"
                 android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/lecturer"
                 android:drawablePadding="@dimen/_10sdp"
                 app:drawableStartCompat="@drawable/ic_time"
-                android:layout_marginBottom="@dimen/_10sdp"
                 app:drawableTint="@color/textColor2" />
+
+            <TextView
+                android:id="@+id/assignment_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Write about the core characteristics of Object Oriented Programming in not less than 3 pages and extensively explain each of them."
+                app:layout_constraintStart_toStartOf="@+id/go_back"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lecturer"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:textAlignment="gravity"
+                android:gravity="start"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/textColor2"
+                android:textSize="@dimen/_12ssp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

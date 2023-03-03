@@ -1,4 +1,5 @@
 package com.theelitedevelopers.academia.modules.main.home.fragments;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,8 @@ import com.theelitedevelopers.academia.R;
 import com.theelitedevelopers.academia.databinding.FragmentHomeBinding;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 import com.theelitedevelopers.academia.modules.main.home.adapters.DueAssignmentsAdapter;
+import com.theelitedevelopers.academia.modules.main.home.announcements.AnnouncementsActivity;
+import com.theelitedevelopers.academia.modules.main.home.assignments.AssignmentsActivity;
 
 import java.util.ArrayList;
 
@@ -35,6 +38,20 @@ public class HomeFragment extends Fragment {
 
         adapter = new DueAssignmentsAdapter(requireActivity(), dueAssignments);
         binding.dueAssignmentsRecyclerView.setAdapter(adapter);
+
+        binding.seeAssignments.setOnClickListener(v -> {
+//            binding.seeAssignments.setImageResource(R.drawable.cornered_background);
+//            binding.seeAnnouncements.setImageResource(R.drawable.cornered_background_light);
+
+            startActivity(new Intent(requireActivity(), AssignmentsActivity.class));
+        });
+
+        binding.seeAnnouncements.setOnClickListener(v -> {
+//            binding.seeAnnouncements.setImageResource(R.drawable.cornered_background);
+//            binding.seeAssignments.setImageResource(R.drawable.cornered_background_light);
+
+            startActivity(new Intent(requireActivity(), AnnouncementsActivity.class));
+        });
 
         return binding.getRoot();
     }
