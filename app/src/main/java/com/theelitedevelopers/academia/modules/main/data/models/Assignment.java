@@ -2,13 +2,15 @@ package com.theelitedevelopers.academia.modules.main.data.models;
 
 public class Assignment {
     String courseCode;
-    String courseName;
+    String courseTitle;
     String title;
     String image;
     String description;
     String lecturerName;
     String datePosted;
     String dateDue;
+
+    public Assignment(){}
 
     public Assignment(String courseCode, String title, String dateDue) {
         this.courseCode = courseCode;
@@ -18,7 +20,7 @@ public class Assignment {
 
     public Assignment(String courseCode, String courseName, String title, String lecturerName, String dateDue) {
         this.courseCode = courseCode;
-        this.courseName = courseName;
+        this.courseTitle = courseName;
         this.title = title;
         this.lecturerName = lecturerName;
         this.dateDue = dateDue;
@@ -48,12 +50,12 @@ public class Assignment {
         this.courseCode = courseCode;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getCourseTitle() {
+        return courseTitle;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void setCourseTitle(String courseTitle) {
+        this.courseTitle = courseTitle;
     }
 
     public String getTitle() {

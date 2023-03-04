@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "332446199256",
+    "project_id": "academiaandbunkies",
+    "storage_bucket": "academiaandbunkies.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332446199256:android:61be2ac7a4aac33a08d6ad",
+        "android_client_info": {
+          "package_name": "com.theelitedevelopers.academia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332446199256-7kngcrc0f7l8run8oqduep9g22i5auo2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.theelitedevelopers.academia",
+            "certificate_hash": "321d3397267144baebf118b09f5d73ef2ccbdfa4"
+          }
+        },
+        {
+          "client_id": "332446199256-utdglpgssd1t00js7du19bnqoa1gt441.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfQkQUPnTmDjjYKsBQ-ae7xCZF_1AbJsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332446199256-utdglpgssd1t00js7du19bnqoa1gt441.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

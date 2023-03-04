@@ -5,31 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/secondary"
-    tools:context=".modules.authentication.LoginActivity">
+    tools:context=".modules.authentication.RegisterActivity">
 
-    <ImageView
-        android:id="@+id/login_image"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
-        android:src="@drawable/academia_login"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/login_now_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login now"
+        android:text="Create new student now"
+        android:layout_marginTop="@dimen/_20sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_image"
+        app:layout_constraintTop_toTopOf="parent"
         android:textColor="@color/primary"
         android:fontFamily="@font/poppins_bold"
         android:textSize="@dimen/_18ssp"/>
 
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputEmail"
+        android:id="@+id/textInputName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -47,6 +41,37 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/textColor"
+            android:textColor="@color/textColor"
+            android:fontFamily="@font/poppins_regular"
+            android:inputType="textEmailAddress"
+            android:hint="Student Full name" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputEmail"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:hintEnabled="true"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_email"
+        app:endIconTint="@color/textColor"
+        app:layout_constraintTop_toBottomOf="@+id/textInputName"
+        android:textColorHint="@color/textColor"
+        app:boxStrokeColor="@color/primary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,7 +79,68 @@
             android:textColor="@color/textColor"
             android:fontFamily="@font/poppins_regular"
             android:inputType="textEmailAddress"
-            android:hint="School Email" />
+            android:hint="Email" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputRegNumber"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:hintEnabled="true"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_person"
+        app:endIconTint="@color/textColor"
+        app:layout_constraintTop_toBottomOf="@+id/textInputEmail"
+        android:textColorHint="@color/textColor"
+        app:boxStrokeColor="@color/primary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/regNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/textColor"
+            android:textColor="@color/textColor"
+            android:fontFamily="@font/poppins_regular"
+            android:inputType="textEmailAddress"
+            android:hint="Registration Number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputHostel"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:hintEnabled="true"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_person"
+        app:endIconTint="@color/textColor"
+        app:layout_constraintTop_toBottomOf="@+id/textInputRegNumber"
+        android:textColorHint="@color/textColor"
+        app:boxStrokeColor="@color/primary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/hostel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/textColor"
+            android:textColor="@color/textColor"
+            android:fontFamily="@font/poppins_regular"
+            android:inputType="textEmailAddress"
+            android:hint="Hostel" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,7 +155,7 @@
         app:hintEnabled="true"
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="@color/textColor"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEmail"
+        app:layout_constraintTop_toBottomOf="@+id/textInputHostel"
         android:textColorHint="@color/textColor"
         app:boxStrokeColor="@color/primary"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +186,7 @@
         android:background="@drawable/primary_button"
         android:fontFamily="@font/poppins_bold"
         android:layout_marginTop="@dimen/_20sdp"
-        android:text="Log in"
+        android:text="Register New Student"
         android:textColor="@color/white"
         android:textAllCaps="false"
         android:textSize="@dimen/_14ssp" />

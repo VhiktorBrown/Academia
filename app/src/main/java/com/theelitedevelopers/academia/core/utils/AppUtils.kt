@@ -15,6 +15,11 @@ class AppUtils {
         private const val DAY_MILLIS = 24 * HOUR_MILLIS
         private const val WEEK_MILLIS = 7 * DAY_MILLIS
 
+        fun getFirstNameOnly(fullName: String): String {
+            val split = fullName.split(" ").toTypedArray()
+            return split[0]
+        }
+
         fun convertDateFromOneFormatToAnother(
             sourceFormat: String?,
             destinationFormat: String?,

@@ -23,13 +23,13 @@ public class AssignmentsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        binding.announcementRecyclerView.setLayoutManager(layoutManager);
-        binding.announcementRecyclerView.setHasFixedSize(true);
+        binding.assignmentRecyclerView.setLayoutManager(layoutManager);
+        binding.assignmentRecyclerView.setHasFixedSize(true);
 
         populateDummyAssignments();
 
         adapter = new AssignmentListAdapter(this, assignments);
-        binding.announcementRecyclerView.setAdapter(adapter);
+        binding.assignmentRecyclerView.setAdapter(adapter);
 
         binding.goBack.setOnClickListener(view -> onBackPressed());
     }

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary"
+    tools:context=".modules.add_announcements_assignments.AddAnnouncementsAssignmentsActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/student_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/primary_button"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/student_image"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:src="@drawable/academia_profile"/>
+
+        <TextView
+            android:id="@+id/student_level_regNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="400 Level | 2018514019"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/student_image"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textSize="@dimen/_12ssp"/>
+
+        <TextView
+            android:id="@+id/student_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chukwunomso"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/student_level_regNumber"
+            app:layout_constraintStart_toEndOf="@+id/student_image"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textSize="@dimen/_14ssp"/>
+
+        <TextView
+            android:id="@+id/student_department"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Computer Science"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/student_level_regNumber"
+            app:layout_constraintStart_toEndOf="@+id/student_image"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textSize="@dimen/_12ssp"/>
+
+        <ImageView
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_logout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:contentDescription="@string/logout"
+            app:tint="@color/white" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/main_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/student_details_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/explore_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Explore"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/_10sdp" />
+
+            <ImageView
+                android:id="@+id/see_assignments"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:background="@drawable/cornered_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/see_announcements"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_40sdp"
+                android:src="@drawable/assignment"
+                app:layout_constraintTop_toBottomOf="@+id/explore_text"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/see_assignments_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/see_assignments"
+                app:layout_constraintEnd_toEndOf="@+id/see_assignments"
+                android:text="Add Assignment"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_semi_bold"
+                app:layout_constraintTop_toBottomOf="@+id/see_assignments"
+                android:textAlignment="gravity"
+                android:gravity="center"
+                android:textSize="@dimen/_9ssp"
+                android:textColor="@color/textColor" />
+
+            <ImageView
+                android:id="@+id/see_announcements"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:background="@drawable/cornered_background_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/see_assignments"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_40sdp"
+                android:src="@drawable/announcement"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@+id/explore_text"
+                app:tint="@color/backgroundLight" />
+
+            <TextView
+                android:id="@+id/see_announcements_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/see_announcements"
+                app:layout_constraintEnd_toEndOf="@+id/see_announcements"
+                android:text="Add Announcement"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_semi_bold"
+                app:layout_constraintTop_toBottomOf="@+id/see_assignments"
+                android:textAlignment="gravity"
+                android:gravity="center"
+                android:textSize="@dimen/_9ssp"
+                android:textColor="@color/textColor" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/assignment_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                tools:listitem="@layout/assignment_item"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/see_assignments_text"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

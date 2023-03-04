@@ -45,7 +45,7 @@ public class AssignmentListAdapter extends RecyclerView.Adapter<AssignmentListAd
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull AssignmentViewHolder holder, int position) {
-        holder.binding.courseTitle.setText(assignments.get(position).getCourseName());
+        holder.binding.courseTitle.setText(assignments.get(position).getCourseTitle());
         holder.binding.courseCode.setText(assignments.get(position).getCourseCode());
         holder.binding.lecturer.setText(assignments.get(position).getLecturerName());
         holder.binding.assignmentTitle.setText(assignments.get(position).getTitle());
@@ -83,7 +83,7 @@ public class AssignmentListAdapter extends RecyclerView.Adapter<AssignmentListAd
         dialog.setCanceledOnTouchOutside(true);
 
         dialogBinding.courseCode.setText(assignment.getCourseCode());
-        dialogBinding.courseTitle.setText(assignment.getCourseName());
+        dialogBinding.courseTitle.setText(assignment.getCourseTitle());
         dialogBinding.assignmentTitle.setText(assignment.getTitle());
         dialogBinding.lecturer.setText(assignment.getLecturerName());
         dialogBinding.assignmentDueDate.setText(assignment.getDateDue());

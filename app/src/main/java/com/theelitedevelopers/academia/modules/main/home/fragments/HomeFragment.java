@@ -1,4 +1,6 @@
 package com.theelitedevelopers.academia.modules.main.home.fragments;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,8 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.theelitedevelopers.academia.R;
+import com.theelitedevelopers.academia.core.data.local.SharedPref;
+import com.theelitedevelopers.academia.core.utils.AppUtils;
+import com.theelitedevelopers.academia.core.utils.Constants;
 import com.theelitedevelopers.academia.databinding.FragmentHomeBinding;
+import com.theelitedevelopers.academia.modules.authentication.LoginActivity;
+import com.theelitedevelopers.academia.modules.authentication.data.models.Student;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 import com.theelitedevelopers.academia.modules.main.home.adapters.DueAssignmentsAdapter;
 import com.theelitedevelopers.academia.modules.main.home.announcements.AnnouncementsActivity;
@@ -24,6 +32,7 @@ public class HomeFragment extends Fragment {
     DueAssignmentsAdapter adapter;
     ArrayList<Assignment> dueAssignments = new ArrayList<>();
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,18 +48,25 @@ public class HomeFragment extends Fragment {
         adapter = new DueAssignmentsAdapter(requireActivity(), dueAssignments);
         binding.dueAssignmentsRecyclerView.setAdapter(adapter);
 
-        binding.seeAssignments.setOnClickListener(v -> {
-//            binding.seeAssignments.setImageResource(R.drawable.cornered_background);
-//            binding.seeAnnouncements.setImageResource(R.drawable.cornered_background_light);
+        binding.studentName.setText(AppUtils.Companion.getFirstNameOnly(SharedPref.getInstance(requireActivity()).getString(Constants.NAME)));
+        binding.studentLevelRegNumber.setText(SharedPref.getInstance(requireActivity()).getString(Constants.LEVEL)+" | "+
+                SharedPref.getInstance(requireActivity()).getString(Constants.REG_NUMBER));
+        binding.studentDepartment.setText(SharedPref.getInstance(requireActivity()).getString(Constants.DEPARTMENT));
 
+
+        binding.seeAssignments.setOnClickListener(v -> {
             startActivity(new Intent(requireActivity(), AssignmentsActivity.class));
         });
 
         binding.seeAnnouncements.setOnClickListener(v -> {
-//            binding.seeAnnouncements.setImageResource(R.drawable.cornered_background);
-//            binding.seeAssignments.setImageResource(R.drawable.cornered_background_light);
-
             startActivity(new Intent(requireActivity(), AnnouncementsActivity.class));
+        });
+
+        binding.logout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            removeDataToSharedPref();
+            startActivity(new Intent(requireActivity(), LoginActivity.class));
+            ((Activity) v.getContext()).finishAffinity();
         });
 
         return binding.getRoot();
@@ -64,5 +80,21 @@ public class HomeFragment extends Fragment {
         dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
         dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
         dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
+    }
+
+
+    private void removeDataToSharedPref(){
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.ID);
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.NAME);
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.EMAIL);
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.REG_NUMBER);
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.DATE_OF_BIRTH);
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.DEPARTMENT);
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.HOSTEL);
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.LEVEL);
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.REP);
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.PHONE_NUMBER);
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.GENDER);
+        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.UID);
     }
 }
