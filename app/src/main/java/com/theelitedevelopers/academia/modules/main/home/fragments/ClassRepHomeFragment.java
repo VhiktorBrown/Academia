@@ -1,4 +1,5 @@
 package com.theelitedevelopers.academia.modules.main.home.fragments;
+
 import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
@@ -22,9 +23,10 @@ import com.theelitedevelopers.academia.R;
 import com.theelitedevelopers.academia.core.data.local.SharedPref;
 import com.theelitedevelopers.academia.core.utils.AppUtils;
 import com.theelitedevelopers.academia.core.utils.Constants;
-import com.theelitedevelopers.academia.databinding.FragmentHomeBinding;
+import com.theelitedevelopers.academia.databinding.FragmentClassRepHomeBinding;
+import com.theelitedevelopers.academia.modules.add_announcements_assignments.AddAnnouncementActivity;
+import com.theelitedevelopers.academia.modules.add_announcements_assignments.AddAssignmentActivity;
 import com.theelitedevelopers.academia.modules.authentication.LoginActivity;
-import com.theelitedevelopers.academia.modules.authentication.data.models.Student;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 import com.theelitedevelopers.academia.modules.main.home.adapters.DueAssignmentsAdapter;
 import com.theelitedevelopers.academia.modules.main.home.announcements.AnnouncementsActivity;
@@ -32,8 +34,8 @@ import com.theelitedevelopers.academia.modules.main.home.assignments.Assignments
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
-    FragmentHomeBinding binding;
+public class ClassRepHomeFragment extends Fragment {
+    FragmentClassRepHomeBinding binding;
     DueAssignmentsAdapter adapter;
     ArrayList<Assignment> dueAssignments = new ArrayList<>();
     FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -43,7 +45,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentClassRepHomeBinding.inflate(inflater, container, false);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false);
         binding.dueAssignmentsRecyclerView.setLayoutManager(layoutManager);
@@ -60,6 +62,13 @@ public class HomeFragment extends Fragment {
                 SharedPref.getInstance(requireActivity()).getString(Constants.REG_NUMBER));
         binding.studentDepartment.setText(SharedPref.getInstance(requireActivity()).getString(Constants.DEPARTMENT));
 
+        binding.addAssignments.setOnClickListener(v -> {
+            startActivity(new Intent(requireActivity(), AddAssignmentActivity.class));
+        });
+
+        binding.addAnnouncements.setOnClickListener(v -> {
+            startActivity(new Intent(requireActivity(), AddAnnouncementActivity.class));
+        });
 
         binding.seeAssignments.setOnClickListener(v -> {
             startActivity(new Intent(requireActivity(), AssignmentsActivity.class));
@@ -79,16 +88,6 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void populateDummyList(){
-        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-    }
-
     private void fetchAssignments(){
         database.collection("assignments")
                 .get()
@@ -106,21 +105,5 @@ public class HomeFragment extends Fragment {
                         Log.d(TAG, "Error getting documents: ", task.getException());
                     }
                 });
-    }
-
-
-    private void removeDataToSharedPref(){
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.ID);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.NAME);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.EMAIL);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.REG_NUMBER);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.DATE_OF_BIRTH);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.DEPARTMENT);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.HOSTEL);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.LEVEL);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.REP);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.PHONE_NUMBER);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.GENDER);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.UID);
     }
 }

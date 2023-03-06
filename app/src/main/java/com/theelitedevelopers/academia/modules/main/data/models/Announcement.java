@@ -8,6 +8,8 @@ public class Announcement {
     String announcerName;
     String date;
 
+    public Announcement(){}
+
     public Announcement(String title, String description, String announcerName, String date) {
         this.title = title;
         this.description = description;

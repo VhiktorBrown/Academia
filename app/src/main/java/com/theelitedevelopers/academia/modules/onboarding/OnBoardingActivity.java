@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.theelitedevelopers.academia.R;
+import com.theelitedevelopers.academia.core.data.local.SharedPref;
+import com.theelitedevelopers.academia.core.utils.Constants;
 import com.theelitedevelopers.academia.databinding.ActivityOnBoardingBinding;
 import com.theelitedevelopers.academia.modules.authentication.LoginActivity;
 import com.theelitedevelopers.academia.modules.onboarding.adapter.OnboardScreenPagerAdapter;
@@ -37,6 +39,7 @@ public class OnBoardingActivity extends AppCompatActivity {
             current = currentPage + 1;
             binding.boardingViewPager.setCurrentItem(current);
             if(current > 2) {
+                SharedPref.getInstance(getApplicationContext()).saveBoolean(Constants.HAS_BEEN_LAUNCHED, true);
                 startActivity(new Intent(OnBoardingActivity.this, LoginActivity.class));
                 finish();
             }

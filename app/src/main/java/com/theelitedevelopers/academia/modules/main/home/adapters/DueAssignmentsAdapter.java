@@ -1,14 +1,18 @@
 package com.theelitedevelopers.academia.modules.main.home.adapters;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.squareup.picasso.Picasso;
-import com.theelitedevelopers.academia.R;
+import com.theelitedevelopers.academia.core.utils.AppUtils;
+import com.theelitedevelopers.academia.databinding.AssignmentDetailsDialogBinding;
 import com.theelitedevelopers.academia.databinding.AssignmentLayoutBinding;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 
@@ -17,6 +21,7 @@ import java.util.ArrayList;
 public class DueAssignmentsAdapter extends RecyclerView.Adapter<DueAssignmentsAdapter.DueAssignmentViewHolder> {
     ArrayList<Assignment> dueAssignments;
     Context context;
+    Dialog dialog;
 
     public DueAssignmentsAdapter(Context context, ArrayList<Assignment> dueAssignments){
         this.context = context;
@@ -35,19 +40,42 @@ public class DueAssignmentsAdapter extends RecyclerView.Adapter<DueAssignmentsAd
 
     @Override
     public void onBindViewHolder(@NonNull DueAssignmentViewHolder holder, int position) {
-        Picasso.get()
-                .load(dueAssignments.get(position).getImage())
-                .placeholder(R.drawable.academia_assignments)
-                .into(holder.binding.assignmentImageView);
 
         if(dueAssignments.get(position).getDateDue() != null){
-            holder.binding.assignmentDueDate.setText(dueAssignments.get(position).getDateDue());
-        }else {
-            holder.binding.assignmentDueDate.setText("2 days left");
+            holder.binding.assignmentDueDate.setText(AppUtils.Companion.getTimeInDaysOrWeeks(dueAssignments.get(position).getDateDue()));
         }
 
         holder.binding.courseCode.setText(dueAssignments.get(position).getCourseCode());
         holder.binding.assignmentInfo.setText(dueAssignments.get(position).getTitle());
+
+        holder.binding.getRoot().setOnClickListener(v -> showAssignmentDetails(dueAssignments.get(position)));
+    }
+
+    public void setList(ArrayList<Assignment> assignments){
+        this.dueAssignments = assignments;
+        notifyDataSetChanged();
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void showAssignmentDetails(Assignment assignment) {
+        dialog = new Dialog(context);
+        AssignmentDetailsDialogBinding dialogBinding = AssignmentDetailsDialogBinding.inflate(dialog.getLayoutInflater());
+        dialog.setContentView(dialogBinding.getRoot());
+        ColorDrawable back = new ColorDrawable(Color.TRANSPARENT);
+        InsetDrawable inset = new InsetDrawable(back, 20);
+        dialog.getWindow().setBackgroundDrawable(inset);
+        dialog.setCanceledOnTouchOutside(true);
+
+        dialogBinding.courseCode.setText(assignment.getCourseCode());
+        dialogBinding.courseTitle.setText(assignment.getCourseTitle());
+        dialogBinding.assignmentTitle.setText(assignment.getTitle());
+        dialogBinding.lecturer.setText(assignment.getLecturerName());
+        dialogBinding.assignmentDueDate.setText(AppUtils.Companion.getTimeInDaysOrWeeks(assignment.getDateDue()));
+        dialogBinding.assignmentDescription.setText(assignment.getDescription());
+
+
+        dialogBinding.goBack.setOnClickListener(view -> dialog.dismiss());
+        dialog.show();
     }
 
     @Override

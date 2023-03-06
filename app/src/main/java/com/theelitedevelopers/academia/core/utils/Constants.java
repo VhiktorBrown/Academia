@@ -13,4 +13,5 @@ public class Constants {
     public static String GENDER = "gender";
     public static String UID = "uid";
     public static String ID = "id";
+    public static String HAS_BEEN_LAUNCHED = "has_been_launched";
 }

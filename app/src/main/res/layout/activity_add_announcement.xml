@@ -4,6 +4,163 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/secondary"
     tools:context=".modules.add_announcements_assignments.AddAnnouncementActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/main_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/go_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                app:tint="@color/textColor2"
+                android:contentDescription="@string/go_back"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/announcement_image"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                app:layout_constraintStart_toEndOf="@id/go_back"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:src="@drawable/academia_announcement"
+                android:tint="@color/primary"/>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Announcement"
+                android:textColor="@color/textColor2"
+                app:layout_constraintStart_toEndOf="@+id/announcement_image"
+                app:layout_constraintTop_toTopOf="@+id/announcement_image"
+                app:layout_constraintBottom_toBottomOf="@+id/announcement_image"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:textSize="@dimen/_14ssp" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@color/textColor2"
+                app:layout_constraintTop_toBottomOf="@+id/announcement_image"
+                android:layout_marginTop="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/announcement_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Announcement Title"
+                android:textColor="@color/textColor2"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/_20sdp"
+                app:layout_constraintTop_toBottomOf="@+id/view"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textSize="@dimen/_12ssp" />
+
+            <EditText
+                android:id="@+id/announcement_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/announcement_title_text"
+                app:layout_constraintTop_toBottomOf="@+id/announcement_title_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:hint="Enter title of this announcement"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/textColor2"
+                android:textColorHint="@color/textColor2"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:background="@drawable/edit_text_background"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp" />
+
+            <TextView
+                android:id="@+id/announcement_description_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Announcement Description"
+                android:textColor="@color/textColor2"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/_20sdp"
+                app:layout_constraintTop_toBottomOf="@+id/announcement_title"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textSize="@dimen/_12ssp" />
+
+            <EditText
+                android:id="@+id/announcement_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/announcement_description_text"
+                app:layout_constraintTop_toBottomOf="@+id/announcement_description_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:hint="Give details about this announcement, so that students can fully understand the message you're passing across."
+                android:textSize="@dimen/_12ssp"
+                android:textAlignment="gravity"
+                android:gravity="start"
+                android:textColor="@color/textColor2"
+                android:textColorHint="@color/textColor2"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:background="@drawable/edit_text_background"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add_announcement_button"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_45sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/announcement_description"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/_50sdp"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_30sdp"
+                android:background="@drawable/primary_button"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:text="Add Announcement"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_14ssp" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_announcement_button"
+                android:indeterminateTint="@color/primary"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:indeterminate="true" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

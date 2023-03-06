@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.theelitedevelopers.academia.core.utils.AppUtils;
 import com.theelitedevelopers.academia.databinding.AnnouncementLayoutBinding;
 import com.theelitedevelopers.academia.databinding.AssignmentDetailsDialogBinding;
 import com.theelitedevelopers.academia.databinding.AssignmentItemBinding;
@@ -49,7 +50,7 @@ public class AssignmentListAdapter extends RecyclerView.Adapter<AssignmentListAd
         holder.binding.courseCode.setText(assignments.get(position).getCourseCode());
         holder.binding.lecturer.setText(assignments.get(position).getLecturerName());
         holder.binding.assignmentTitle.setText(assignments.get(position).getTitle());
-        holder.binding.assignmentDueDate.setText(assignments.get(position).getDateDue());
+        holder.binding.assignmentDueDate.setText(AppUtils.Companion.getTimeInDaysOrWeeks(assignments.get(position).getDateDue()));
 
         holder.binding.getRoot().setOnClickListener(v -> showAssignmentDetails(assignments.get(position)));
     }
@@ -86,8 +87,8 @@ public class AssignmentListAdapter extends RecyclerView.Adapter<AssignmentListAd
         dialogBinding.courseTitle.setText(assignment.getCourseTitle());
         dialogBinding.assignmentTitle.setText(assignment.getTitle());
         dialogBinding.lecturer.setText(assignment.getLecturerName());
-        dialogBinding.assignmentDueDate.setText(assignment.getDateDue());
-        dialogBinding.assignmentDescription.setText("In full details and not less than 3 pages, give clear, easy to understand details about the assignment stated above in the title. To be submitted as a term paper");
+        dialogBinding.assignmentDueDate.setText(AppUtils.Companion.getTimeInDaysOrWeeks(assignment.getDateDue()));
+        dialogBinding.assignmentDescription.setText(assignment.getDescription());
 
 
         dialogBinding.goBack.setOnClickListener(view -> dialog.dismiss());

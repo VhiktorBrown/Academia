@@ -1,12 +1,18 @@
 package com.theelitedevelopers.academia.modules.main.home.announcements;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.theelitedevelopers.academia.databinding.ActivityAnnouncementsBinding;
 import com.theelitedevelopers.academia.modules.main.data.models.Announcement;
+import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 import com.theelitedevelopers.academia.modules.main.home.announcements.adapters.AnnouncementListAdapter;
 
 import java.util.ArrayList;
@@ -15,6 +21,7 @@ public class AnnouncementsActivity extends AppCompatActivity {
     ActivityAnnouncementsBinding binding;
     AnnouncementListAdapter adapter;
     ArrayList<Announcement> announcements = new ArrayList<>();
+    FirebaseFirestore database = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +33,32 @@ public class AnnouncementsActivity extends AppCompatActivity {
         binding.announcementRecyclerView.setLayoutManager(layoutManager);
         binding.announcementRecyclerView.setHasFixedSize(true);
 
-        populateDummyAnnouncements();
+        //populateDummyAnnouncements();
+        fetchAnnouncements();
 
         adapter = new AnnouncementListAdapter(this, announcements);
         binding.announcementRecyclerView.setAdapter(adapter);
 
         binding.goBack.setOnClickListener(view -> onBackPressed());
+    }
+
+    private void fetchAnnouncements(){
+        database.collection("announcements")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if(!task.getResult().isEmpty()){
+                            announcements.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                announcements.add(document.toObject(Announcement.class));
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                            adapter.setList(announcements);
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
     }
 
     private void populateDummyAnnouncements(){

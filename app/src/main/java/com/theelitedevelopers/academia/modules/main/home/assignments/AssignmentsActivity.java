@@ -1,10 +1,15 @@
 package com.theelitedevelopers.academia.modules.main.home.assignments;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.theelitedevelopers.academia.databinding.ActivityAssignmentsBinding;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 import com.theelitedevelopers.academia.modules.main.home.assignments.adapters.AssignmentListAdapter;
@@ -15,6 +20,7 @@ public class AssignmentsActivity extends AppCompatActivity {
     ActivityAssignmentsBinding binding;
     AssignmentListAdapter adapter;
     ArrayList<Assignment> assignments = new ArrayList<>();
+    FirebaseFirestore database = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +32,32 @@ public class AssignmentsActivity extends AppCompatActivity {
         binding.assignmentRecyclerView.setLayoutManager(layoutManager);
         binding.assignmentRecyclerView.setHasFixedSize(true);
 
-        populateDummyAssignments();
+        //populateDummyAssignments();
+        fetchAssignments();
 
         adapter = new AssignmentListAdapter(this, assignments);
         binding.assignmentRecyclerView.setAdapter(adapter);
 
         binding.goBack.setOnClickListener(view -> onBackPressed());
+    }
+
+    private void fetchAssignments(){
+        database.collection("assignments")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if(!task.getResult().isEmpty()){
+                            assignments.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                assignments.add(document.toObject(Assignment.class));
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                            adapter.setList(assignments);
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
     }
 
     private void populateDummyAssignments(){

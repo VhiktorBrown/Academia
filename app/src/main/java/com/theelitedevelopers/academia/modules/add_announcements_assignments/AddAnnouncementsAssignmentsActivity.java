@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.theelitedevelopers.academia.core.data.local.SharedPref;
@@ -58,6 +60,13 @@ public class AddAnnouncementsAssignmentsActivity extends AppCompatActivity {
         binding.seeAssignments.setOnClickListener(v -> startActivity(new Intent(this, AddAssignmentActivity.class)));
 
         binding.seeAnnouncements.setOnClickListener(v -> startActivity(new Intent(this, AddAnnouncementActivity.class)));
+
+        binding.logout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            removeDataToSharedPref();
+            startActivity(new Intent(this, LoginActivity.class));
+            finishAffinity();
+        });
     }
 
     private void fetchAssignments(){
@@ -77,6 +86,21 @@ public class AddAnnouncementsAssignmentsActivity extends AppCompatActivity {
                         Log.d(TAG, "Error getting documents: ", task.getException());
                     }
                 });
+    }
+
+    private void removeDataToSharedPref(){
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.ID);
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.NAME);
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.EMAIL);
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.REG_NUMBER);
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.DATE_OF_BIRTH);
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.DEPARTMENT);
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.HOSTEL);
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.LEVEL);
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.REP);
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.PHONE_NUMBER);
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.GENDER);
+        SharedPref.getInstance(getApplicationContext()).removeKeyValue(Constants.UID);
     }
 
     @Override

@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,9 +22,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.theelitedevelopers.academia.core.data.local.SharedPref;
+import com.theelitedevelopers.academia.core.utils.AppUtils;
 import com.theelitedevelopers.academia.core.utils.Constants;
 import com.theelitedevelopers.academia.databinding.ActivityRegisterBinding;
 import com.theelitedevelopers.academia.modules.authentication.data.models.Student;
+import com.theelitedevelopers.academia.modules.main.MainActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -118,7 +121,9 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                             //Task<DocumentSnapshot> snapshot = documentReference.get();
                             student.setId(documentReference.getId());
-                            saveDataToSharedPref(student);
+                            AppUtils.Companion.saveDataToSharedPref(RegisterActivity.this, student);
+                            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                            finishAffinity();
 
                             Toast.makeText(RegisterActivity.this, "Student data saved to DB", Toast.LENGTH_SHORT).show();
                         }
@@ -129,20 +134,5 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.w(TAG, "Error adding document", e);
                         }
                     });
-        }
-
-        private void saveDataToSharedPref(Student student){
-            SharedPref.getInstance(this).saveString(Constants.ID, student.getId());
-            SharedPref.getInstance(this).saveString(Constants.NAME, student.getFullName());
-            SharedPref.getInstance(this).saveString(Constants.EMAIL, student.getEmail());
-            SharedPref.getInstance(this).saveString(Constants.REG_NUMBER, student.getRegNumber());
-            SharedPref.getInstance(this).saveString(Constants.DATE_OF_BIRTH, student.getDateOfBirth());
-            SharedPref.getInstance(this).saveString(Constants.DEPARTMENT, student.getDepartment());
-            SharedPref.getInstance(this).saveString(Constants.HOSTEL, student.getHostel());
-            SharedPref.getInstance(this).saveString(Constants.LEVEL, student.getLevel());
-            SharedPref.getInstance(this).saveBoolean(Constants.REP, student.getRep());
-            SharedPref.getInstance(this).saveString(Constants.PHONE_NUMBER, student.getPhoneNumber());
-            SharedPref.getInstance(this).saveString(Constants.GENDER, student.getGender());
-            SharedPref.getInstance(this).saveString(Constants.UID, student.getUid());
         }
     }

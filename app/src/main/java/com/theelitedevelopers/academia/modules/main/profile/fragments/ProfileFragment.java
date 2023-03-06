@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.theelitedevelopers.academia.R;
 import com.theelitedevelopers.academia.core.data.local.SharedPref;
+import com.theelitedevelopers.academia.core.utils.AppUtils;
 import com.theelitedevelopers.academia.core.utils.Constants;
 import com.theelitedevelopers.academia.databinding.FragmentProfileBinding;
 
@@ -27,6 +28,7 @@ public class ProfileFragment extends Fragment {
         binding.profileName.setText(SharedPref.getInstance(requireActivity()).getString(Constants.NAME));
         binding.department.setText(SharedPref.getInstance(requireActivity()).getString(Constants.DEPARTMENT));
         binding.gender.setText(SharedPref.getInstance(requireActivity()).getString(Constants.GENDER));
+        binding.dateOfBirth.setText(AppUtils.Companion.convertDateToPresentableFormatWithOnlyDate(SharedPref.getInstance(requireActivity()).getString(Constants.DATE_OF_BIRTH)));
         binding.phoneNumber.setText(SharedPref.getInstance(requireActivity()).getString(Constants.PHONE_NUMBER));
         binding.hostel.setText(SharedPref.getInstance(requireActivity()).getString(Constants.HOSTEL));
         binding.levelRegNumber.setText(SharedPref.getInstance(requireActivity()).getString(Constants.LEVEL) +"  "+

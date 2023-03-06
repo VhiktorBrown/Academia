@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.theelitedevelopers.academia.core.data.local.SharedPref;
+import com.theelitedevelopers.academia.core.utils.Constants;
 import com.theelitedevelopers.academia.databinding.ActivitySplashScreenBinding;
+import com.theelitedevelopers.academia.modules.authentication.LoginActivity;
 import com.theelitedevelopers.academia.modules.onboarding.OnBoardingActivity;
 
 @SuppressLint("CustomSplashScreen")
@@ -22,7 +25,12 @@ public class SplashScreen extends AppCompatActivity {
 
         handler = new Handler();
         handler.postDelayed(() -> {
-            Intent intent = new Intent(this, OnBoardingActivity.class);
+            Intent intent;
+            if(SharedPref.getInstance(getApplicationContext()).getBoolean(Constants.HAS_BEEN_LAUNCHED)){
+                intent = new Intent(this, LoginActivity.class);
+            }else {
+                intent = new Intent(this, OnBoardingActivity.class);
+            }
             startActivity(intent);
             finish();
         }, 500);

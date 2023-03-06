@@ -1,6 +1,9 @@
 package com.theelitedevelopers.academia.core.utils
 
 import android.annotation.SuppressLint
+import android.content.Context
+import com.theelitedevelopers.academia.core.data.local.SharedPref
+import com.theelitedevelopers.academia.modules.authentication.data.models.Student
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,6 +22,104 @@ class AppUtils {
             val split = fullName.split(" ").toTypedArray()
             return split[0]
         }
+
+        fun getTimeAgo(time: Long): String? {
+            var time = time
+            if (time < 1000000000000L) {
+                // if timestamp given in seconds, convert to millis
+                time *= 1000
+            }
+            val now = System.currentTimeMillis()
+            if (now > time || time <= 0) {
+                return null
+            }
+
+            // TODO: localize
+            val diff = time - now
+            return when {
+                diff < MINUTE_MILLIS -> {
+                    "Time's up"
+                }
+                diff < 2 * MINUTE_MILLIS -> {
+                    "1 min left"
+                }
+                diff < 50 * MINUTE_MILLIS -> {
+                    (diff / MINUTE_MILLIS).toString() + " minutes left"
+                }
+                diff < 110 * MINUTE_MILLIS -> {
+                    "1 hour left"
+                }
+                diff < 24 * HOUR_MILLIS -> {
+                    (diff / HOUR_MILLIS).toString() + " hours left"
+                }
+                diff < 48 * HOUR_MILLIS -> {
+                    "1 day left"
+                }
+                diff < 7 * DAY_MILLIS -> {
+                    (diff / DAY_MILLIS).toString() + " days left"
+                }
+                diff < 2 * WEEK_MILLIS -> {
+                    "a week left"
+                }
+                else -> {
+                    (diff / WEEK_MILLIS).toString() + " weeks left"
+                }
+            }
+        }
+
+        @SuppressLint("SimpleDateFormat")
+        fun convertDateToPresentableFormat(dateInString: String): String {
+            val simpleDateFormat = SimpleDateFormat("dd MMM yyyy")
+            val simpleTimeFormat = SimpleDateFormat("hh:mm aa")
+            var date: Date? = null
+            var dateInPresentableFormat: String? = null
+            val format = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss")
+            try {
+                date = format.parse(dateInString)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            dateInPresentableFormat = if (date != null) {
+                simpleDateFormat.format(date) +
+                        ". " + simpleTimeFormat.format(date)
+            } else {
+                ""
+            }
+            return dateInPresentableFormat
+        }
+
+        @SuppressLint("SimpleDateFormat")
+        fun convertDateToPresentableFormatWithOnlyDate(dateInString: String): String? {
+            val simpleDateFormat = SimpleDateFormat("dd MMM yyyy")
+            var date: Date? = null
+            var dateInPresentableFormat: String? = null
+            val format = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss")
+            try {
+                date = format.parse(dateInString)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            dateInPresentableFormat = if (date != null) {
+                simpleDateFormat.format(date)
+            } else {
+                ""
+            }
+            return dateInPresentableFormat
+        }
+
+        fun getTimeInDaysOrWeeks(date: String): String? {
+            var date1: Date? = null
+            var timeInMillis: Long = 0
+            val format = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss")
+            try {
+                date1 = format.parse(date)
+                timeInMillis = date1.time
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return getTimeAgo(timeInMillis)
+        }
+
 
         fun convertDateFromOneFormatToAnother(
             sourceFormat: String?,
@@ -139,6 +240,36 @@ class AppUtils {
             return diff < 7 * AppUtils.DAY_MILLIS
         }
 
+        fun saveDataToSharedPref(context: Context, student: Student) {
+            SharedPref.getInstance(context).saveString(Constants.ID, student.id)
+            SharedPref.getInstance(context).saveString(Constants.NAME, student.fullName)
+            SharedPref.getInstance(context).saveString(Constants.EMAIL, student.email)
+            SharedPref.getInstance(context).saveString(Constants.REG_NUMBER, student.regNumber)
+            SharedPref.getInstance(context).saveString(Constants.DATE_OF_BIRTH, student.dateOfBirth)
+            SharedPref.getInstance(context).saveString(Constants.DEPARTMENT, student.department)
+            SharedPref.getInstance(context).saveString(Constants.HOSTEL, student.hostel)
+            SharedPref.getInstance(context).saveString(Constants.LEVEL, student.level)
+            SharedPref.getInstance(context).saveBoolean(Constants.REP, student.rep)
+            SharedPref.getInstance(context).saveString(Constants.PHONE_NUMBER, student.phoneNumber)
+            SharedPref.getInstance(context).saveString(Constants.GENDER, student.gender)
+            SharedPref.getInstance(context).saveString(Constants.UID, student.uid)
+        }
+
+
+        fun removeDataToSharedPref(context : Context) {
+            SharedPref.getInstance(context).removeKeyValue(Constants.ID)
+            SharedPref.getInstance(context).removeKeyValue(Constants.NAME)
+            SharedPref.getInstance(context).removeKeyValue(Constants.EMAIL)
+            SharedPref.getInstance(context).removeKeyValue(Constants.REG_NUMBER)
+            SharedPref.getInstance(context).removeKeyValue(Constants.DATE_OF_BIRTH)
+            SharedPref.getInstance(context).removeKeyValue(Constants.DEPARTMENT)
+            SharedPref.getInstance(context).removeKeyValue(Constants.HOSTEL)
+            SharedPref.getInstance(context).removeKeyValue(Constants.LEVEL)
+            SharedPref.getInstance(context).removeKeyValue(Constants.REP)
+            SharedPref.getInstance(context).removeKeyValue(Constants.PHONE_NUMBER)
+            SharedPref.getInstance(context).removeKeyValue(Constants.GENDER)
+            SharedPref.getInstance(context).removeKeyValue(Constants.UID)
+        }
 
         @SuppressLint("SimpleDateFormat")
         fun getTimeFormat(): SimpleDateFormat {

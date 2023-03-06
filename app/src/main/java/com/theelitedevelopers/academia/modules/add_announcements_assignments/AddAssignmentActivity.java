@@ -6,9 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,6 +24,7 @@ import com.theelitedevelopers.academia.core.utils.Constants;
 import com.theelitedevelopers.academia.databinding.ActivityAddAssignmentBinding;
 import com.theelitedevelopers.academia.modules.authentication.RegisterActivity;
 import com.theelitedevelopers.academia.modules.authentication.data.models.Student;
+import com.theelitedevelopers.academia.modules.main.MainActivity;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 
 import java.text.SimpleDateFormat;
@@ -45,7 +48,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
 
         binding.addAssignmentButton.setOnClickListener(v -> {
             String assignmentTitle = binding.assignmentTitle.getText().toString();
-            String assignmentDescription = binding.assignmentTitle.getText().toString();
+            String assignmentDescription = binding.assignmentDescription.getText().toString();
             String courseCode = binding.courseCode.getText().toString();
             String courseTitle = binding.courseTitle.getText().toString();
             String lecturerName = binding.lecturer.getText().toString();
@@ -61,6 +64,8 @@ public class AddAssignmentActivity extends AppCompatActivity {
                     assignment.setLecturerName(lecturerName);
                     assignment.setDatePosted(dateToday);
                     assignment.setDateDue(date);
+
+                    binding.progressBar.setVisibility(View.VISIBLE);
 
                     saveAssignmentToDB(assignment);
 
@@ -92,16 +97,18 @@ public class AddAssignmentActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        binding.progressBar.setVisibility(View.GONE);
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         Toast.makeText(AddAssignmentActivity.this, "Assignment added to DB successfully", Toast.LENGTH_SHORT).show();
 
-                        startActivity(new Intent(AddAssignmentActivity.this, AddAnnouncementsAssignmentsActivity.class));
+                        startActivity(new Intent(AddAssignmentActivity.this, MainActivity.class));
                         finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        binding.progressBar.setVisibility(View.GONE);
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
@@ -114,7 +121,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
         assDueDate = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
             assDueDate.set(year, month, dayOfMonth);
-
+            showTimePicker();
 
             simpleDateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
 
@@ -125,13 +132,34 @@ public class AddAssignmentActivity extends AppCompatActivity {
             String destinationFormat = "EEE, d MMM yyyy HH:mm:ss";
 
             //convert date to Universal format
-            String dueDate = AppUtils.Companion.convertDateFromOneFormatToAnother(sourceFormat, destinationFormat, assDueDate.getTime().toString());
-            dateToday = AppUtils.Companion.convertDateFromOneFormatToAnother(sourceFormat, destinationFormat, String.valueOf(new Date().toString()));
-            binding.selectDate.setText(simpleDateFormat.format(assDueDate.getTime()) +". "+ simpleTimeFormat.format(assDueDate.getTime()));
-            date = dueDate;
+            date = AppUtils.Companion.convertDateFromOneFormatToAnother(sourceFormat, destinationFormat, assDueDate.getTime().toString());
+            dateToday = AppUtils.Companion.convertDateFromOneFormatToAnother(sourceFormat, destinationFormat, new Date().toString());
 
         }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE));
         datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
         datePickerDialog.show();
     }
+
+    private void showTimePicker(){
+        Calendar currentDate = Calendar.getInstance();
+
+        new TimePickerDialog(this, (timePicker, i, i1) -> {
+
+            assDueDate.set(Calendar.HOUR_OF_DAY, i);
+            assDueDate.set(Calendar.MINUTE, i1);
+
+            simpleDateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
+            simpleTimeFormat = new SimpleDateFormat("hh:mm aa");
+
+
+            String sourceFormat = "EEE MMM d HH:mm:ss z yyyy";
+            String destinationFormat = "EEE, d MMM yyyy HH:mm:ss";
+
+            //convert date to Universal format
+            date = AppUtils.Companion.convertDateFromOneFormatToAnother(sourceFormat, destinationFormat, assDueDate.getTime().toString());
+            binding.selectDate.setText(simpleDateFormat.format(assDueDate.getTime()) +". "+ simpleTimeFormat.format(assDueDate.getTime()));
+
+        }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false).show();
+    }
+
 }

@@ -6,9 +6,12 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.theelitedevelopers.academia.core.utils.AppUtils;
 import com.theelitedevelopers.academia.databinding.AnnouncementLayoutBinding;
 import com.theelitedevelopers.academia.modules.main.data.models.Announcement;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class AnnouncementListAdapter extends RecyclerView.Adapter<AnnouncementListAdapter.AnnouncementViewHolder> {
@@ -37,7 +40,7 @@ public class AnnouncementListAdapter extends RecyclerView.Adapter<AnnouncementLi
         holder.binding.announcementTitle.setText(announcements.get(position).getTitle());
         holder.binding.announcementDetails.setText(announcements.get(position).getDescription());
         holder.binding.announcer.setText("By "+announcements.get(position).getAnnouncerName());
-        holder.binding.announcementDate.setText(announcements.get(position).getDate());
+        holder.binding.announcementDate.setText(AppUtils.Companion.convertDateToPresentableFormatWithOnlyDate(announcements.get(position).getDate()));
     }
 
     public void setList(ArrayList<Announcement> announcements){

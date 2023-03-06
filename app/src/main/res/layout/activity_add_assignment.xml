@@ -89,6 +89,7 @@
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:hint="Assignment Title"
                 android:textSize="@dimen/_12ssp"
+                android:textColor="@color/textColor2"
                 android:textColorHint="@color/textColor2"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:background="@drawable/edit_text_background"
@@ -118,6 +119,7 @@
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:hint="Assignment Description"
                 android:textSize="@dimen/_12ssp"
+                android:textColor="@color/textColor2"
                 android:textColorHint="@color/textColor2"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:background="@drawable/edit_text_background"
@@ -147,6 +149,7 @@
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:hint="Enter Course code"
                 android:textSize="@dimen/_12ssp"
+                android:textColor="@color/textColor2"
                 android:textColorHint="@color/textColor2"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:background="@drawable/edit_text_background"
@@ -175,6 +178,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:hint="Enter course title"
+                android:textColor="@color/textColor2"
                 android:textSize="@dimen/_12ssp"
                 android:textColorHint="@color/textColor2"
                 android:fontFamily="@font/poppins_semi_bold"
@@ -204,6 +208,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:hint="Enter Lecturer's name"
+                android:textColor="@color/textColor2"
                 android:textSize="@dimen/_12ssp"
                 android:textColorHint="@color/textColor2"
                 android:fontFamily="@font/poppins_semi_bold"
@@ -221,6 +226,7 @@
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:hint="Enter date of submission"
                 android:textSize="@dimen/_12ssp"
+                android:textColor="@color/textColor2"
                 android:textColorHint="@color/textColor2"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:background="@drawable/edit_text_background"
@@ -245,6 +251,18 @@
                 android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_14ssp" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_assignment_button"
+                android:indeterminateTint="@color/primary"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:indeterminate="true" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
