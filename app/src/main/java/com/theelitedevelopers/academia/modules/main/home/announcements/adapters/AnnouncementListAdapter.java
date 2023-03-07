@@ -40,7 +40,11 @@ public class AnnouncementListAdapter extends RecyclerView.Adapter<AnnouncementLi
         holder.binding.announcementTitle.setText(announcements.get(position).getTitle());
         holder.binding.announcementDetails.setText(announcements.get(position).getDescription());
         holder.binding.announcer.setText("By "+announcements.get(position).getAnnouncerName());
-        holder.binding.announcementDate.setText(AppUtils.Companion.convertDateToPresentableFormatWithOnlyDate(announcements.get(position).getDate()));
+        holder.binding.announcementDate.setText(
+                AppUtils.Companion.convertDateToPresentableFormatWithOnlyDate(
+                        AppUtils.Companion.fromTimeStampToString(
+                                announcements.get(position).getDate().getSeconds()
+                        )));
     }
 
     public void setList(ArrayList<Announcement> announcements){

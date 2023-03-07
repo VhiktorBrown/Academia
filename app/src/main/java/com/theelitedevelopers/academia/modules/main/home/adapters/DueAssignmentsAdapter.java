@@ -42,7 +42,8 @@ public class DueAssignmentsAdapter extends RecyclerView.Adapter<DueAssignmentsAd
     public void onBindViewHolder(@NonNull DueAssignmentViewHolder holder, int position) {
 
         if(dueAssignments.get(position).getDateDue() != null){
-            holder.binding.assignmentDueDate.setText(AppUtils.Companion.getTimeInDaysOrWeeks(dueAssignments.get(position).getDateDue()));
+            holder.binding.assignmentDueDate.setText(AppUtils.Companion.getTimeInDaysOrWeeks(
+                    AppUtils.Companion.fromTimeStampToString(dueAssignments.get(position).getDateDue().getSeconds())));
         }
 
         holder.binding.courseCode.setText(dueAssignments.get(position).getCourseCode());
@@ -70,7 +71,8 @@ public class DueAssignmentsAdapter extends RecyclerView.Adapter<DueAssignmentsAd
         dialogBinding.courseTitle.setText(assignment.getCourseTitle());
         dialogBinding.assignmentTitle.setText(assignment.getTitle());
         dialogBinding.lecturer.setText(assignment.getLecturerName());
-        dialogBinding.assignmentDueDate.setText(AppUtils.Companion.getTimeInDaysOrWeeks(assignment.getDateDue()));
+        dialogBinding.assignmentDueDate.setText(AppUtils.Companion.getTimeInDaysOrWeeks(
+                AppUtils.Companion.fromTimeStampToString(assignment.getDateDue().getSeconds())));
         dialogBinding.assignmentDescription.setText(assignment.getDescription());
 
 

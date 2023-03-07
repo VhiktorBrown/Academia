@@ -1,16 +1,20 @@
 package com.theelitedevelopers.academia.modules.main.data.models;
 
+import com.google.firebase.Timestamp;
+
+import java.util.Date;
+
 public class Announcement {
     String id;
     String title;
     String description;
     String announcerId;
     String announcerName;
-    String date;
+    Timestamp date;
 
     public Announcement(){}
 
-    public Announcement(String title, String description, String announcerName, String date) {
+    public Announcement(String title, String description, String announcerName, Timestamp date) {
         this.title = title;
         this.description = description;
         this.announcerName = announcerName;
@@ -57,11 +61,11 @@ public class Announcement {
         this.announcerName = announcerName;
     }
 
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 }

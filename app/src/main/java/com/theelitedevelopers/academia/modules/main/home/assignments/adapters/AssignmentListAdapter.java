@@ -50,7 +50,11 @@ public class AssignmentListAdapter extends RecyclerView.Adapter<AssignmentListAd
         holder.binding.courseCode.setText(assignments.get(position).getCourseCode());
         holder.binding.lecturer.setText(assignments.get(position).getLecturerName());
         holder.binding.assignmentTitle.setText(assignments.get(position).getTitle());
-        holder.binding.assignmentDueDate.setText(AppUtils.Companion.getTimeInDaysOrWeeks(assignments.get(position).getDateDue()));
+        holder.binding.assignmentDueDate.setText(
+                AppUtils.Companion.getTimeInDaysOrWeeks(
+                        AppUtils.Companion.fromTimeStampToString(
+                                assignments.get(position).getDateDue().getSeconds()
+                        )));
 
         holder.binding.getRoot().setOnClickListener(v -> showAssignmentDetails(assignments.get(position)));
     }
@@ -87,7 +91,10 @@ public class AssignmentListAdapter extends RecyclerView.Adapter<AssignmentListAd
         dialogBinding.courseTitle.setText(assignment.getCourseTitle());
         dialogBinding.assignmentTitle.setText(assignment.getTitle());
         dialogBinding.lecturer.setText(assignment.getLecturerName());
-        dialogBinding.assignmentDueDate.setText(AppUtils.Companion.getTimeInDaysOrWeeks(assignment.getDateDue()));
+        dialogBinding.assignmentDueDate.setText(AppUtils.Companion.getTimeInDaysOrWeeks(
+                AppUtils.Companion.fromTimeStampToString(
+                        assignment.getDateDue().getSeconds()
+                )));
         dialogBinding.assignmentDescription.setText(assignment.getDescription());
 
 

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,11 +28,13 @@ import com.theelitedevelopers.academia.modules.authentication.data.models.Studen
 import com.theelitedevelopers.academia.modules.main.MainActivity;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class AddAssignmentActivity extends AppCompatActivity {
     ActivityAddAssignmentBinding binding;
@@ -39,6 +42,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
     String date="", dateToday="";
     SimpleDateFormat simpleDateFormat, simpleTimeFormat;
     FirebaseFirestore database = FirebaseFirestore.getInstance();
+    Timestamp dateDue, datePosted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +66,8 @@ public class AddAssignmentActivity extends AppCompatActivity {
                     assignment.setCourseCode(courseCode);
                     assignment.setCourseTitle(courseTitle);
                     assignment.setLecturerName(lecturerName);
-                    assignment.setDatePosted(dateToday);
-                    assignment.setDateDue(date);
+                    assignment.setDatePosted(datePosted);
+                    assignment.setDateDue(dateDue);
 
                     binding.progressBar.setVisibility(View.VISIBLE);
 
@@ -159,7 +163,22 @@ public class AddAssignmentActivity extends AppCompatActivity {
             date = AppUtils.Companion.convertDateFromOneFormatToAnother(sourceFormat, destinationFormat, assDueDate.getTime().toString());
             binding.selectDate.setText(simpleDateFormat.format(assDueDate.getTime()) +". "+ simpleTimeFormat.format(assDueDate.getTime()));
 
+            try {
+                getTimeStamp(date, dateToday);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false).show();
+    }
+
+    private void getTimeStamp(String date, String dateToday) throws ParseException {
+        String destinationFormat = "EEE, d MMM yyyy HH:mm:ss";
+
+        dateDue = new Timestamp(Objects.requireNonNull(
+                AppUtils.Companion.convertToDateFormat(destinationFormat, date)));
+        datePosted = new Timestamp(Objects.requireNonNull(
+                AppUtils.Companion.convertToDateFormat(destinationFormat, dateToday)));
     }
 
 }

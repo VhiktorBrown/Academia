@@ -1,5 +1,9 @@
 package com.theelitedevelopers.academia.modules.main.data.models;
 
+import com.google.firebase.Timestamp;
+
+import java.util.Date;
+
 public class Assignment {
     String courseCode;
     String courseTitle;
@@ -7,18 +11,18 @@ public class Assignment {
     String image;
     String description;
     String lecturerName;
-    String datePosted;
-    String dateDue;
+    Timestamp datePosted;
+    Timestamp dateDue;
 
     public Assignment(){}
 
-    public Assignment(String courseCode, String title, String dateDue) {
+    public Assignment(String courseCode, String title, Timestamp dateDue) {
         this.courseCode = courseCode;
         this.title = title;
         this.dateDue = dateDue;
     }
 
-    public Assignment(String courseCode, String courseName, String title, String lecturerName, String dateDue) {
+    public Assignment(String courseCode, String courseName, String title, String lecturerName, Timestamp dateDue) {
         this.courseCode = courseCode;
         this.courseTitle = courseName;
         this.title = title;
@@ -74,19 +78,19 @@ public class Assignment {
         this.description = description;
     }
 
-    public String getDatePosted() {
+    public Timestamp getDatePosted() {
         return datePosted;
     }
 
-    public void setDatePosted(String datePosted) {
+    public void setDatePosted(Timestamp datePosted) {
         this.datePosted = datePosted;
     }
 
-    public String getDateDue() {
+    public Timestamp getDateDue() {
         return dateDue;
     }
 
-    public void setDateDue(String dateDue) {
+    public void setDateDue(Timestamp dateDue) {
         this.dateDue = dateDue;
     }
 }

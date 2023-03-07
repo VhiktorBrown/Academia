@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.theelitedevelopers.academia.R;
 import com.theelitedevelopers.academia.core.data.local.SharedPref;
@@ -90,6 +91,7 @@ public class ClassRepHomeFragment extends Fragment {
 
     private void fetchAssignments(){
         database.collection("assignments")
+                .orderBy("dateDue", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

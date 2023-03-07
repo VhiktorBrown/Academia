@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.theelitedevelopers.academia.databinding.ActivityAssignmentsBinding;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
@@ -32,7 +33,6 @@ public class AssignmentsActivity extends AppCompatActivity {
         binding.assignmentRecyclerView.setLayoutManager(layoutManager);
         binding.assignmentRecyclerView.setHasFixedSize(true);
 
-        //populateDummyAssignments();
         fetchAssignments();
 
         adapter = new AssignmentListAdapter(this, assignments);
@@ -43,6 +43,7 @@ public class AssignmentsActivity extends AppCompatActivity {
 
     private void fetchAssignments(){
         database.collection("assignments")
+                .orderBy("dateDue", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -60,13 +61,13 @@ public class AssignmentsActivity extends AppCompatActivity {
                 });
     }
 
-    private void populateDummyAssignments(){
-        assignments.add(new Assignment("CSC 401", "Data Structures and Algorithm", "Write on the types of Arrays there is.", "Prof. A. N. Anibogu", "15-03-2023"));
-        assignments.add(new Assignment("CSC 421", "Introduction to Computer Graphics", "What is the history of Computer Graphics?", "Mr. chinedu Ikedieze", "18-03-2023"));
-        assignments.add(new Assignment("CSC 441", "Research Methodology & Design", "What are the various ways to measure data?", "Prof. Boniface", "10 days left"));
-        assignments.add(new Assignment("CSC 401", "Data Structures and Algorithm", "Write on the types of Arrays there is.", "Prof. A. N. Anibogu", "15-03-2023"));
-        assignments.add(new Assignment("CSC 401", "Data Structures and Algorithm", "Write on the types of Arrays there is.", "Prof. A. N. Anibogu", "15-03-2023"));
-        assignments.add(new Assignment("CSC 401", "Data Structures and Algorithm", "Write on the types of Arrays there is.", "Prof. A. N. Anibogu", "15-03-2023"));
-    }
+//    private void populateDummyAssignments(){
+//        assignments.add(new Assignment("CSC 401", "Data Structures and Algorithm", "Write on the types of Arrays there is.", "Prof. A. N. Anibogu", "15-03-2023"));
+//        assignments.add(new Assignment("CSC 421", "Introduction to Computer Graphics", "What is the history of Computer Graphics?", "Mr. chinedu Ikedieze", "18-03-2023"));
+//        assignments.add(new Assignment("CSC 441", "Research Methodology & Design", "What are the various ways to measure data?", "Prof. Boniface", "10 days left"));
+//        assignments.add(new Assignment("CSC 401", "Data Structures and Algorithm", "Write on the types of Arrays there is.", "Prof. A. N. Anibogu", "15-03-2023"));
+//        assignments.add(new Assignment("CSC 401", "Data Structures and Algorithm", "Write on the types of Arrays there is.", "Prof. A. N. Anibogu", "15-03-2023"));
+//        assignments.add(new Assignment("CSC 401", "Data Structures and Algorithm", "Write on the types of Arrays there is.", "Prof. A. N. Anibogu", "15-03-2023"));
+//    }
 
 }

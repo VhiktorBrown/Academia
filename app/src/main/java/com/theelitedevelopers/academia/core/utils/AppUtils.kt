@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.theelitedevelopers.academia.core.data.local.SharedPref
 import com.theelitedevelopers.academia.modules.authentication.data.models.Student
+import java.lang.String.format
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -137,6 +139,12 @@ class AppUtils {
                 e.printStackTrace()
             }
             return newDate
+        }
+
+        @Throws(ParseException::class)
+        fun convertToDateFormat(formatType: String?, dateInString: String): Date? {
+            @SuppressLint("SimpleDateFormat") val format = SimpleDateFormat(formatType)
+            return format.parse(dateInString)
         }
 
 
@@ -274,6 +282,23 @@ class AppUtils {
         @SuppressLint("SimpleDateFormat")
         fun getTimeFormat(): SimpleDateFormat {
             return SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss")
+        }
+
+        @SuppressLint("SimpleDateFormat")
+        fun fromTimeStampToString(timeStamp: Long): String {
+            var stamp = timeStamp;
+            stamp *= 1000L;
+            return try {
+                val sdf = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss")
+                val netDate = Date(stamp)
+                sdf.format(netDate)
+            } catch (ex: Exception) {
+                "xx"
+            }
+        }
+
+        fun getDestinationFormat(): String {
+            return "EEE, d MMM yyyy HH:mm:ss";
         }
 
         @SuppressLint("SimpleDateFormat")

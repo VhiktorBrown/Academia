@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.theelitedevelopers.academia.databinding.ActivityAnnouncementsBinding;
 import com.theelitedevelopers.academia.modules.main.data.models.Announcement;
@@ -44,6 +45,7 @@ public class AnnouncementsActivity extends AppCompatActivity {
 
     private void fetchAnnouncements(){
         database.collection("announcements")
+                .orderBy("date", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -61,12 +63,12 @@ public class AnnouncementsActivity extends AppCompatActivity {
                 });
     }
 
-    private void populateDummyAnnouncements(){
-        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
-        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
-        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
-        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
-        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
-        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
-    }
+//    private void populateDummyAnnouncements(){
+//        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
+//        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
+//        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
+//        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
+//        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
+//        announcements.add(new Announcement("General Meeting", "There will be a general meeting of all CSC students in all levels on Monday 23rd of MNarch 2023 at Final Year classroom by 11:00am", "Kyrian Kosisochukwu", "09 March"));
+//    }
 }

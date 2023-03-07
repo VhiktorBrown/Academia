@@ -7,4 +7,5 @@
     <string name="chat">Chat</string>
     <string name="profile">Profile</string>
     <string name="go_back">go back</string>
+    <string name="start_new_chat">Start new chat</string>
 </resources>

@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.theelitedevelopers.academia.R;
@@ -25,11 +27,13 @@ import com.theelitedevelopers.academia.modules.main.MainActivity;
 import com.theelitedevelopers.academia.modules.main.data.models.Announcement;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class AddAnnouncementActivity extends AppCompatActivity {
     ActivityAddAnnouncementBinding binding;
@@ -52,7 +56,11 @@ public class AddAnnouncementActivity extends AppCompatActivity {
                 Announcement announcement = new Announcement();
                 announcement.setTitle(assignmentTitle);
                 announcement.setDescription(assignmentDescription);
-                announcement.setDate(getDateTodayInAcceptableFormat());
+                try {
+                    announcement.setDate(getTimeStamp());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 announcement.setAnnouncerId(SharedPref.getInstance(getApplicationContext()).getString(Constants.UID));
                 announcement.setAnnouncerName(SharedPref.getInstance(getApplicationContext()).getString(Constants.NAME));
 
@@ -92,11 +100,15 @@ public class AddAnnouncementActivity extends AppCompatActivity {
     }
 
 
-    private String getDateTodayInAcceptableFormat(){
+    private Timestamp getTimeStamp() throws ParseException {
         String sourceFormat = "EEE MMM d HH:mm:ss z yyyy";
         String destinationFormat = "EEE, d MMM yyyy HH:mm:ss";
 
-        dateToday = AppUtils.Companion.convertDateFromOneFormatToAnother(sourceFormat, destinationFormat, new Date().toString());
-        return  dateToday;
+        Date date = AppUtils.Companion.convertToDateFormat(destinationFormat,
+                Objects.requireNonNull(AppUtils.Companion.convertDateFromOneFormatToAnother(
+                        sourceFormat, destinationFormat, new Date().toString())));
+
+        assert date != null;
+        return new Timestamp(date);
     }
 }

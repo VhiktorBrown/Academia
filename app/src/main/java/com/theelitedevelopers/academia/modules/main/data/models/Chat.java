@@ -1,30 +1,47 @@
 package com.theelitedevelopers.academia.modules.main.data.models;
 
+import com.google.firebase.Timestamp;
+
+import java.util.Date;
+
 public class Chat {
-    String senderId;
+    String id;
+    String uid;
     String message;
     String image;
     String name;
-    String date;
+    Timestamp date;
     String lastMessage;
+    String owner;
+    String gender;
+
+    public Chat(){}
 
     public Chat(String name, String lastMessage) {
         this.name = name;
         this.lastMessage = lastMessage;
     }
 
-    public Chat(String senderId, String message, String date) {
-        this.senderId = senderId;
+    public Chat(String uid, String message, Timestamp date) {
+        this.uid = uid;
         this.message = message;
         this.date = date;
     }
 
-    public String getSenderId() {
-        return senderId;
+    public String getId() {
+        return id;
     }
 
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getMessage() {
@@ -51,11 +68,11 @@ public class Chat {
         this.name = name;
     }
 
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
@@ -65,5 +82,21 @@ public class Chat {
 
     public void setLastMessage(String lastMessage) {
         this.lastMessage = lastMessage;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
+import com.theelitedevelopers.academia.core.utils.AppUtils;
+import com.theelitedevelopers.academia.core.utils.Constants;
 import com.theelitedevelopers.academia.databinding.ChatLayoutBinding;
 import com.theelitedevelopers.academia.modules.main.chat.ChatActivity;
 import com.theelitedevelopers.academia.modules.main.data.models.Chat;
 import com.theelitedevelopers.academia.R;
 
+import java.lang.invoke.ConstantCallSite;
 import java.util.ArrayList;
 
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatViewHolder> {
@@ -49,9 +52,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
             holder.binding.lastMessage.setText("");
         }
 
-        holder.binding.date.setText("10:14 PM");
-        //set Date.
-        //holder.binding.date.setText(AppUtils.getBuzzDate(buzzArrayList.get(holder.getAdapterPosition()).getTime()));
+        holder.binding.date.setText(AppUtils.Companion.getInboxDate(
+                AppUtils.Companion.fromTimeStampToString(chatArrayList.get(position).getDate().getSeconds())));
 
             Picasso.get()
                     .load(chatArrayList.get(position).getImage())
@@ -60,6 +62,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
 
             holder.binding.getRoot().setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                intent.putExtra(Constants.RECEIVER_UID, chatArrayList.get(position).getUid());
+                intent.putExtra(Constants.NAME, chatArrayList.get(position).getName());
                 v.getContext().startActivity(intent);
             });
     }

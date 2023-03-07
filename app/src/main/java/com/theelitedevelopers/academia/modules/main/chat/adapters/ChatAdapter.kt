@@ -10,6 +10,9 @@ import com.theelitedevelopers.academia.databinding.ChatInLayoutBinding
 import com.theelitedevelopers.academia.databinding.ChatOutLayoutBinding
 import com.theelitedevelopers.academia.modules.main.data.models.Chat
 import com.theelitedevelopers.academia.R
+import com.theelitedevelopers.academia.core.data.local.SharedPref
+import com.theelitedevelopers.academia.core.utils.AppUtils
+import com.theelitedevelopers.academia.core.utils.Constants
 
 class ChatAdapter(var context : Context, var messageList : ArrayList<Chat>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -45,7 +48,8 @@ class ChatAdapter(var context : Context, var messageList : ArrayList<Chat>) : Re
             //set the message
             holder.binding.inboxOutMessage.text = messageList[position].message
 
-            holder.binding.inboxOutDate.text = messageList[position].date!!
+            holder.binding.inboxOutDate.text = AppUtils.getInboxDate(
+                AppUtils.fromTimeStampToString(messageList[position].date!!.seconds))
 
         }else {
             val viewHolder = holder as ReceivedViewHolder
@@ -57,13 +61,14 @@ class ChatAdapter(var context : Context, var messageList : ArrayList<Chat>) : Re
             //set the message
             holder.binding.inboxInMessage.text = messageList[position].message
 
-            holder.binding.inboxInDate.text = messageList[position].date!!
+            holder.binding.inboxInDate.text = AppUtils.getInboxDate(
+                AppUtils.fromTimeStampToString(messageList[position].date!!.seconds))
 
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if("1" == messageList[position].senderId){
+        return if(SharedPref.getInstance(context).getString(Constants.UID) == messageList[position].uid){
             SEND
         }else {
             RECEIVE

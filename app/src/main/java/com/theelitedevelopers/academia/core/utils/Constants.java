@@ -1,6 +1,7 @@
 package com.theelitedevelopers.academia.core.utils;
 
 public class Constants {
+    public static final String RECEIVER_UID = "receiver_uid";
     public static String NAME = "name";
     public static String DEPARTMENT = "department";
     public static String EMAIL = "email";

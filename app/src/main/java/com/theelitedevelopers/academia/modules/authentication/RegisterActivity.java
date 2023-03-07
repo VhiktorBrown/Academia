@@ -59,7 +59,8 @@ public class RegisterActivity extends AppCompatActivity {
                 student.setHostel(hostel);
                 student.setDepartment("Computer Science");
                 student.setDateOfBirth("Mon, 04 Feb 2002 17:55:01");
-                student.setGender("Male");
+                student.setGender("Female");
+                student.setRep(false);
                 student.setPhoneNumber("0807635263");
                 student.setLevel("400 Level");
                 student.setPhotoUrl("");

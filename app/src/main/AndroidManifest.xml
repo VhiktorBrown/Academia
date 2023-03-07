@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Academia">
         <activity
+            android:name=".modules.main.chat.StartNewChatActivity"
+            android:exported="true" />
+        <activity
             android:name=".modules.add_announcements_assignments.AddAssignmentActivity"
             android:exported="true" />
         <activity
