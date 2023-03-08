@@ -25,6 +25,40 @@ class AppUtils {
             return split[0]
         }
 
+        //This function is primarily for the buzz bubbles- to handle date Manipulation
+        fun getSingleInboxDate(date: String): String? {
+            var buzzDate: Date? = null
+            var finalDate: String? = null
+            try {
+                buzzDate = Objects.requireNonNull(
+                    getTimeFormat().parse(date)
+                )
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+            finalDate = when {
+                isTheSameDay(date) -> {
+                    getHourMinuteFormat().format(buzzDate!!)
+                }
+                withinAWeek(date) -> {
+                    getDayFormat()
+                        .format(buzzDate!!) + ", " + getHourMinuteFormat()
+                        .format(buzzDate)
+                }
+                isTheSameYear(date) -> {
+                    getDayMonthFormat()
+                        .format(buzzDate!!) + ", " + getHourMinuteFormat()
+                        .format(buzzDate)
+                }
+                else -> {
+                    getDayMonthYearFormat()
+                        .format(buzzDate!!) + ", " + getHourMinuteFormat()
+                        .format(buzzDate)
+                }
+            }
+            return finalDate
+        }
+
         fun getTimeAgo(time: Long): String? {
             var time = time
             if (time < 1000000000000L) {
@@ -33,7 +67,7 @@ class AppUtils {
             }
             val now = System.currentTimeMillis()
             if (now > time || time <= 0) {
-                return null
+                return "Time's up"
             }
 
             // TODO: localize
@@ -127,11 +161,11 @@ class AppUtils {
             sourceFormat: String?,
             destinationFormat: String?,
             date: String
-        ): String? {
+        ): String {
             @SuppressLint("SimpleDateFormat") val sourceDateFormat = SimpleDateFormat(sourceFormat)
             @SuppressLint("SimpleDateFormat") val destinationDateFormat =
                 SimpleDateFormat(destinationFormat)
-            var newDate: String? = ""
+            var newDate: String = ""
             try {
                 val sourceDate = sourceDateFormat.parse(date)
                 newDate = destinationDateFormat.format(Objects.requireNonNull(sourceDate))
@@ -261,6 +295,7 @@ class AppUtils {
             SharedPref.getInstance(context).saveString(Constants.PHONE_NUMBER, student.phoneNumber)
             SharedPref.getInstance(context).saveString(Constants.GENDER, student.gender)
             SharedPref.getInstance(context).saveString(Constants.UID, student.uid)
+            SharedPref.getInstance(context).saveString(Constants.TOKEN, student.token)
         }
 
 
@@ -277,6 +312,7 @@ class AppUtils {
             SharedPref.getInstance(context).removeKeyValue(Constants.PHONE_NUMBER)
             SharedPref.getInstance(context).removeKeyValue(Constants.GENDER)
             SharedPref.getInstance(context).removeKeyValue(Constants.UID)
+            SharedPref.getInstance(context).removeKeyValue(Constants.TOKEN)
         }
 
         @SuppressLint("SimpleDateFormat")
@@ -295,6 +331,17 @@ class AppUtils {
             } catch (ex: Exception) {
                 "xx"
             }
+        }
+
+        @Throws(ParseException::class)
+        fun convertToDateWithoutSeconds(dateInString: String): Date? {
+            val date = convertDateFromOneFormatToAnother(
+                "EEE, d MMM yyyy HH:mm:ss",
+                "EEE, d MMM yyyy HH:mm",
+                dateInString
+            )
+            return getTimeFormatWithoutSeconds()
+                .parse(date)
         }
 
         fun getDestinationFormat(): String {

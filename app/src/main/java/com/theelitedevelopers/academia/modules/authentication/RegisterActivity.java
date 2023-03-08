@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.theelitedevelopers.academia.core.data.local.SharedPref;
 import com.theelitedevelopers.academia.core.utils.AppUtils;
 import com.theelitedevelopers.academia.core.utils.Constants;
@@ -35,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
     ActivityRegisterBinding binding;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseFirestore database = FirebaseFirestore.getInstance();
+    String firebaseToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
             studentMap.put("dateOfBirth", student.getDateOfBirth());
             studentMap.put("uid", student.getUid());
             studentMap.put("photoUrl", student.getPhotoUrl());
+            studentMap.put("token", firebaseToken);
 
             // Add a new document with a generated ID
             database.collection("students")
@@ -136,4 +139,29 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
         }
+
+        private String getToken(){
+        final String[] token = {""};
+            FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+
+                    // Get new FCM registration token
+                    token[0] = task.getResult();
+
+                    Log.d(TAG, token[0]);
+                    Toast.makeText(RegisterActivity.this, token[0], Toast.LENGTH_SHORT).show();
+                });
+
+            return token[0];
+        }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseToken = getToken();
     }
+}

@@ -15,6 +15,7 @@ public class Student {
     String password;
     String hostel;
     String photoUrl;
+    String token;
 
     public Student(){}
 
@@ -128,5 +129,13 @@ public class Student {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

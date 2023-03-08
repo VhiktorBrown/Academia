@@ -8,4 +8,5 @@
     <string name="profile">Profile</string>
     <string name="go_back">go back</string>
     <string name="start_new_chat">Start new chat</string>
+    <string name="msg_token_fmt" />
 </resources>

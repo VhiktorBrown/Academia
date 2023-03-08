@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_5sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +40,7 @@
             android:paddingTop="@dimen/_10sdp"
             android:paddingBottom="@dimen/_10sdp"
             android:lineSpacingExtra="@dimen/_5sdp"
-            android:fontFamily="@font/montserrat_regular"
+            android:fontFamily="@font/poppins_regular"
             android:textColor="@color/white" />
 
         <TextView
@@ -52,7 +52,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="23 Mar 2022, 08:41"
             android:textSize="@dimen/_10ssp"
-            android:fontFamily="@font/montserrat_regular"
+            android:fontFamily="@font/poppins_regular"
             android:textColor="@color/textColor2"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp" />

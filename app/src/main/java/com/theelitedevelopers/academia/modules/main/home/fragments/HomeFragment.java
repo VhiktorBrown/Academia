@@ -14,11 +14,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.theelitedevelopers.academia.R;
 import com.theelitedevelopers.academia.core.data.local.SharedPref;
 import com.theelitedevelopers.academia.core.utils.AppUtils;
@@ -109,7 +113,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-
 
     private void removeDataToSharedPref(){
         SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.ID);

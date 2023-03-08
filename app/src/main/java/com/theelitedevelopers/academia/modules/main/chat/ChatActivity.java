@@ -51,7 +51,6 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseFirestore database = FirebaseFirestore.getInstance();
     String senderId, receiverId;
     String receiverUid, receiverName;
-    Chat currentChat;
     Chat chat;
 
     @Override
@@ -71,7 +70,7 @@ public class ChatActivity extends AppCompatActivity {
         binding.inboxRecyclerView.setLayoutManager(layoutManager);
         binding.inboxRecyclerView.setHasFixedSize(true);
 
-        adapter = new ChatAdapter(this, chatArrayList);
+        adapter = new ChatAdapter(this, chatArrayList, receiverUid);
         binding.inboxRecyclerView.setAdapter(adapter);
 
         database.collection("chats")
@@ -88,6 +87,9 @@ public class ChatActivity extends AppCompatActivity {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                             }
                             adapter.setList(chatArrayList);
+                            if(chatArrayList.size() > 1){
+                                binding.inboxRecyclerView.smoothScrollToPosition(chatArrayList.size()-1);
+                            }
                         }
                     } else {
                         Log.d(TAG, "Error getting documents: ", task.getException());
@@ -141,7 +143,9 @@ public class ChatActivity extends AppCompatActivity {
                             chatArrayList.add(chat);
                             adapter.setList(chatArrayList);
                             Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference1.getId());
-                            Toast.makeText(ChatActivity.this, "Message sent successfully", Toast.LENGTH_SHORT).show();
+                            if(chatArrayList.size() > 0){
+                                binding.inboxRecyclerView.smoothScrollToPosition(chatArrayList.size()-1);
+                            }
                             getCurrentChatHistoryItem(chat);
                         }))
                 .addOnFailureListener(e -> {

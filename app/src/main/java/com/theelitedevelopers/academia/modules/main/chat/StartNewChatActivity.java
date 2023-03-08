@@ -43,9 +43,7 @@ public class StartNewChatActivity extends AppCompatActivity {
         adapter = new StartNewChatAdapter(this, students);
         binding.newChatRecyclerView.setAdapter(adapter);
 
-        binding.goBack.setOnClickListener(v -> {
-            onBackPressed();
-        });
+        binding.goBack.setOnClickListener(v -> onBackPressed());
 
         database.collection("students")
                 .get()

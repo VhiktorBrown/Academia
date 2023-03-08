@@ -1,5 +1,7 @@
 package com.theelitedevelopers.academia.core.utils;
 
+import org.jetbrains.annotations.Nullable;
+
 public class Constants {
     public static final String RECEIVER_UID = "receiver_uid";
     public static String NAME = "name";
@@ -15,4 +17,5 @@ public class Constants {
     public static String UID = "uid";
     public static String ID = "id";
     public static String HAS_BEEN_LAUNCHED = "has_been_launched";
+    public static final String TOKEN = "token";
 }
