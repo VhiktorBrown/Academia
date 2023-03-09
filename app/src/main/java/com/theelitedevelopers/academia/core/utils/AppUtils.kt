@@ -103,6 +103,50 @@ class AppUtils {
             }
         }
 
+        fun getTimeAgoForNotification(time: Long): String? {
+            var time = time
+            if (time < 1000000000000L) {
+                // if timestamp given in seconds, convert to millis
+                time *= 1000
+            }
+            val now = System.currentTimeMillis()
+            if (now > time || time <= 0) {
+                return "Time's up"
+            }
+
+            // TODO: localize
+            val diff = time - now
+            return when {
+                diff < MINUTE_MILLIS -> {
+                    "Time's up"
+                }
+                diff < 2 * MINUTE_MILLIS -> {
+                    "1 min time"
+                }
+                diff < 50 * MINUTE_MILLIS -> {
+                    (diff / MINUTE_MILLIS).toString() + " minutes time"
+                }
+                diff < 110 * MINUTE_MILLIS -> {
+                    "1 hour time"
+                }
+                diff < 24 * HOUR_MILLIS -> {
+                    (diff / HOUR_MILLIS).toString() + " hours time"
+                }
+                diff < 48 * HOUR_MILLIS -> {
+                    "1 day time"
+                }
+                diff < 7 * DAY_MILLIS -> {
+                    (diff / DAY_MILLIS).toString() + " days time"
+                }
+                diff < 2 * WEEK_MILLIS -> {
+                    "a week time"
+                }
+                else -> {
+                    (diff / WEEK_MILLIS).toString() + " weeks time"
+                }
+            }
+        }
+
         @SuppressLint("SimpleDateFormat")
         fun convertDateToPresentableFormat(dateInString: String): String {
             val simpleDateFormat = SimpleDateFormat("dd MMM yyyy")
@@ -156,6 +200,18 @@ class AppUtils {
             return getTimeAgo(timeInMillis)
         }
 
+        fun getTimeInDaysOrWeeksForNotification(date: String): String? {
+            var date1: Date? = null
+            var timeInMillis: Long = 0
+            val format = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss")
+            try {
+                date1 = format.parse(date)
+                timeInMillis = date1.time
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return getTimeAgoForNotification(timeInMillis)
+        }
 
         fun convertDateFromOneFormatToAnother(
             sourceFormat: String?,
@@ -291,7 +347,11 @@ class AppUtils {
             SharedPref.getInstance(context).saveString(Constants.DEPARTMENT, student.department)
             SharedPref.getInstance(context).saveString(Constants.HOSTEL, student.hostel)
             SharedPref.getInstance(context).saveString(Constants.LEVEL, student.level)
-            SharedPref.getInstance(context).saveBoolean(Constants.REP, student.rep)
+            if(student.rep != null){
+                SharedPref.getInstance(context).saveBoolean(Constants.REP, student.rep)
+            }else{
+                SharedPref.getInstance(context).saveBoolean(Constants.REP, false)
+            }
             SharedPref.getInstance(context).saveString(Constants.PHONE_NUMBER, student.phoneNumber)
             SharedPref.getInstance(context).saveString(Constants.GENDER, student.gender)
             SharedPref.getInstance(context).saveString(Constants.UID, student.uid)
@@ -313,6 +373,7 @@ class AppUtils {
             SharedPref.getInstance(context).removeKeyValue(Constants.GENDER)
             SharedPref.getInstance(context).removeKeyValue(Constants.UID)
             SharedPref.getInstance(context).removeKeyValue(Constants.TOKEN)
+            SharedPref.getInstance(context).removeKeyValue(Constants.SUBSCRIBED)
         }
 
         @SuppressLint("SimpleDateFormat")

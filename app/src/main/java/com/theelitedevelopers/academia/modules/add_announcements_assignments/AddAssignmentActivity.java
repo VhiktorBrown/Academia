@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -19,7 +20,13 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.theelitedevelopers.academia.core.data.local.SharedPref;
+import com.theelitedevelopers.academia.core.data.remote.ServiceGenerator;
+import com.theelitedevelopers.academia.core.data.request.Notification;
+import com.theelitedevelopers.academia.core.data.request.NotificationBody;
+import com.theelitedevelopers.academia.core.data.request.NotificationMessage;
 import com.theelitedevelopers.academia.core.utils.AppUtils;
 import com.theelitedevelopers.academia.core.utils.Constants;
 import com.theelitedevelopers.academia.databinding.ActivityAddAssignmentBinding;
@@ -28,6 +35,8 @@ import com.theelitedevelopers.academia.modules.authentication.data.models.Studen
 import com.theelitedevelopers.academia.modules.main.MainActivity;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +44,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 public class AddAssignmentActivity extends AppCompatActivity {
     ActivityAddAssignmentBinding binding;
@@ -82,6 +98,31 @@ public class AddAssignmentActivity extends AppCompatActivity {
         binding.selectDate.setOnClickListener(v -> showDateTimePicker());
     }
 
+    private void setUpNotificationData(Assignment assignment){
+        Notification notification = new Notification();
+        notification.setTo("/topics/"+Constants.ASSIGNMENT_TOPIC);
+        NotificationBody notificationBody = new NotificationBody();
+        NotificationMessage notificationMessage = new NotificationMessage();
+        notificationMessage.setTitle(AppUtils.Companion.getFirstNameOnly(SharedPref.getInstance(getApplicationContext()).getString(Constants.NAME))+
+                " just added a new Assignment");
+        notificationMessage.setBody(assignment.getTitle()+" assignment is to be submitted in "+
+                AppUtils.Companion.getTimeInDaysOrWeeksForNotification(
+                        AppUtils.Companion.fromTimeStampToString(assignment.getDateDue().getSeconds()))+ ". Hurry up, do it and submit before the deadline.");
+
+        notificationBody.setTitle(AppUtils.Companion.getFirstNameOnly(SharedPref.getInstance(getApplicationContext()).getString(Constants.NAME))+
+                " just added a new Assignment");
+        notificationBody.setBody(assignment.getTitle()+" assignment is to be submitted in "+
+                AppUtils.Companion.getTimeInDaysOrWeeksForNotification(
+                AppUtils.Companion.fromTimeStampToString(assignment.getDateDue().getSeconds()))+ ". Hurry up, do it and submit before the deadline.");
+        notification.setData(notificationBody);
+        notification.setNotification(notificationMessage);
+
+        notification.setPriority("high");
+
+        sendNotification(notification, assignment);
+    }
+
+
     private void saveAssignmentToDB(Assignment assignment){
 
         Map<String, Object> assignmentMap = new HashMap<>();
@@ -105,8 +146,7 @@ public class AddAssignmentActivity extends AppCompatActivity {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         Toast.makeText(AddAssignmentActivity.this, "Assignment added to DB successfully", Toast.LENGTH_SHORT).show();
 
-                        startActivity(new Intent(AddAssignmentActivity.this, MainActivity.class));
-                        finish();
+                        setUpNotificationData(assignment);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -142,6 +182,35 @@ public class AddAssignmentActivity extends AppCompatActivity {
         }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE));
         datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
         datePickerDialog.show();
+    }
+
+    private void sendNotification(Notification notification, Assignment assignment){
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "key=" + Constants.PUSH_NOT_KEY);
+
+            Single<Response<JSONObject>> sendNotification = ServiceGenerator.getInstance()
+                    .getApi().sendNotification(headers, notification);
+        sendNotification.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleObserver<Response<JSONObject>>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(@NonNull Response<JSONObject> sentNotificationResponse) {
+                            if(sentNotificationResponse.isSuccessful()){
+                                startActivity(new Intent(AddAssignmentActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            sendNotification(notification, assignment);
+                        }
+                    });
     }
 
     private void showTimePicker(){

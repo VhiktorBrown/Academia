@@ -26,6 +26,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.theelitedevelopers.academia.core.data.local.SharedPref;
+import com.theelitedevelopers.academia.core.data.remote.ServiceGenerator;
+import com.theelitedevelopers.academia.core.data.request.Notification;
+import com.theelitedevelopers.academia.core.data.request.NotificationBody;
+import com.theelitedevelopers.academia.core.data.request.NotificationMessage;
 import com.theelitedevelopers.academia.core.utils.AppUtils;
 import com.theelitedevelopers.academia.core.utils.Constants;
 import com.theelitedevelopers.academia.databinding.ActivityChatBinding;
@@ -37,12 +41,21 @@ import com.theelitedevelopers.academia.modules.main.chat.adapters.ChatAdapter;
 import com.theelitedevelopers.academia.modules.main.data.models.Announcement;
 import com.theelitedevelopers.academia.modules.main.data.models.Chat;
 
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
     ActivityChatBinding binding;
@@ -253,6 +266,9 @@ public class ChatActivity extends AppCompatActivity {
                                                     if(currentChat != null) {
                                                         currentChat.setId(task1.getResult().getDocuments().get(0).getId());
                                                         updateLastMessageAndDateForReceiver(currentChat, chat);
+
+                                                        //send Push Notifications
+                                                        fetchStudentToken(receiverUid);
                                                     }
                                                 }
                                             }
@@ -265,6 +281,72 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void fetchStudentToken(String uid){
+            database.collection("students")
+                    .whereEqualTo("uid", uid)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                           Student student = task.getResult().getDocuments().get(0).toObject(Student.class);
+                            if(student != null){
+                                student.setId(task.getResult().getDocuments().get(0).getId());
+                                setUpNotificationData(student);
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    });
+    }
+
+    private void setUpNotificationData(Student student){
+        Notification notification = new Notification();
+        notification.setTo(student.getToken());
+        NotificationBody notificationBody = new NotificationBody();
+        NotificationMessage notificationMessage = new NotificationMessage();
+        notificationMessage.setTitle(SharedPref.getInstance(getApplicationContext()).getString(Constants.NAME)+" sent you a message");
+        notificationMessage.setBody(chat.getMessage());
+
+        notificationBody.setTitle(SharedPref.getInstance(getApplicationContext()).getString(Constants.NAME)+" sent you a message");
+        notificationBody.setBody(chat.getMessage());
+
+        notification.setData(notificationBody);
+        notification.setNotification(notificationMessage);
+
+        notification.setPriority("high");
+
+        sendNotification(notification, student);
+    }
+
+    private void sendNotification(Notification notification, Student student){
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "key=" + Constants.PUSH_NOT_KEY);
+
+        Single<Response<JSONObject>> sendNotification = ServiceGenerator.getInstance()
+                .getApi().sendNotification(headers, notification);
+        sendNotification.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<JSONObject>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Response<JSONObject> sentNotificationResponse) {
+                        if(sentNotificationResponse.isSuccessful()){
+                            Toast.makeText(getApplicationContext(), "Push Notification sent", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        sendNotification(notification, student);
+                    }
+                });
+    }
+
+
 
     private Date getDateTodayInAcceptableFormat() throws ParseException {
         String sourceFormat = "EEE MMM d HH:mm:ss z yyyy";

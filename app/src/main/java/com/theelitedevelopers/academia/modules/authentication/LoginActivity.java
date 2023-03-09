@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +47,9 @@ public class LoginActivity extends AppCompatActivity {
 
         binding.loginNowText.setOnClickListener(v -> startActivity(new Intent(this, RegisterActivity.class)));
 
+        if(!SharedPref.getInstance(getApplicationContext()).getBoolean(Constants.SUBSCRIBED)){
+            subscribeToTopics();
+        }
         binding.logInButton.setOnClickListener(v -> {
 
             String email = binding.email.getText().toString();
@@ -65,6 +69,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginStudent(Student student){
+        getToken();
+
         firebaseAuth.signInWithEmailAndPassword(student.getEmail(), student.getPassword())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -89,9 +95,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-        //also get Firebase token
-        firebaseToken = getToken();
     }
 
     private void getStudentDetails(String uid){
@@ -140,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private String getToken(){
+    private void getToken(){
         final String[] token = {""};
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
@@ -151,12 +154,23 @@ public class LoginActivity extends AppCompatActivity {
 
                     // Get new FCM registration token
                     token[0] = task.getResult();
+                    firebaseToken = token[0];
 
                     Log.d(TAG, token[0]);
                     Toast.makeText(LoginActivity.this, token[0], Toast.LENGTH_SHORT).show();
                 });
+    }
 
-        return token[0];
+    private void subscribeToTopics(){
+        FirebaseMessaging.getInstance().subscribeToTopic(Constants.ASSIGNMENT_TOPIC).addOnSuccessListener(aVoid -> {
+        });
+
+        FirebaseMessaging.getInstance().subscribeToTopic(Constants.ANNOUNCEMENT_TOPIC).addOnSuccessListener(aVoid -> {
+        });
+
+        FirebaseMessaging.getInstance().subscribeToTopic(Constants.CHAT_TOPIC).addOnSuccessListener(aVoid -> {
+            SharedPref.getInstance(getApplicationContext()).saveBoolean(Constants.SUBSCRIBED, true);
+        });
     }
 
     @Override

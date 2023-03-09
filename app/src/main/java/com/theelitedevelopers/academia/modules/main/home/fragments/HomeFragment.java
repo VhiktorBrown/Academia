@@ -84,16 +84,6 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
     }
 
-//    private void populateDummyList(){
-//        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-//        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-//        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-//        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-//        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-//        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-//        dueAssignments.add(new Assignment("CSC 422", "Research on Rete Algorithm and write a term paper on it", "03 Apr"));
-//    }
-
     private void fetchAssignments(){
         database.collection("assignments")
                 .orderBy("dateDue", Query.Direction.ASCENDING)

@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -13,6 +14,9 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.theelitedevelopers.academia.R;
 import com.theelitedevelopers.academia.modules.main.MainActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -24,6 +28,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
         super.onMessageReceived(message);
+
+        if(message.getData().size() > 0){
+            JSONObject messageObject = new JSONObject(message.getData());
+            try {
+                String token = messageObject.get("to").toString();
+                String title = messageObject.getJSONObject("data").get("title").toString();
+                String body = messageObject.getJSONObject("data").get("body").toString();
+
+                showNotification(title, body);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         if (message.getNotification() != null) {
             // Since the notification is received directly
