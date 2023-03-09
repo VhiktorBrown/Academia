@@ -66,6 +66,8 @@ public class AddAssignmentActivity extends AppCompatActivity {
         binding = ActivityAddAssignmentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        binding.goBack.setOnClickListener(v -> onBackPressed());
+
         binding.addAssignmentButton.setOnClickListener(v -> {
             String assignmentTitle = binding.assignmentTitle.getText().toString();
             String assignmentDescription = binding.assignmentDescription.getText().toString();

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -24,6 +25,7 @@ import com.theelitedevelopers.academia.modules.main.chat.ChatActivity;
 import com.theelitedevelopers.academia.modules.main.chat.StartNewChatActivity;
 import com.theelitedevelopers.academia.modules.main.chat.adapters.ChatAdapter;
 import com.theelitedevelopers.academia.modules.main.chat.adapters.ChatListAdapter;
+import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 import com.theelitedevelopers.academia.modules.main.data.models.Chat;
 
 import java.util.ArrayList;
@@ -55,21 +57,37 @@ public class ChatFragment extends Fragment {
     }
 
     private void fetchChatHistory(){
+//        database.collection(SharedPref.getInstance(requireActivity()).getString(Constants.UID)+"history")
+//                .orderBy("date", Query.Direction.DESCENDING)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        if(!task.getResult().isEmpty()){
+//                            chatArrayList.clear();
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                chatArrayList.add(document.toObject(Chat.class));
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                            }
+//                            adapter.setList(chatArrayList);
+//                        }
+//                    } else {
+//                        Log.d(TAG, "Error getting documents: ", task.getException());
+//                    }
+//                });
+
         database.collection(SharedPref.getInstance(requireActivity()).getString(Constants.UID)+"history")
                 .orderBy("date", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if(!task.getResult().isEmpty()){
-                            chatArrayList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                chatArrayList.add(document.toObject(Chat.class));
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                            adapter.setList(chatArrayList);
+                .addSnapshotListener((value, error) -> {
+                    assert value != null;
+                    if(!value.getDocuments().isEmpty()) {
+                        binding.noDataLayout.setVisibility(View.GONE);
+                        chatArrayList.clear();
+                        for (DocumentSnapshot documentSnapshot : value.getDocuments()) {
+                            chatArrayList.add(documentSnapshot.toObject(Chat.class));
                         }
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
+                        adapter.setList(chatArrayList);
+                    }else {
+                        binding.noDataLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -80,11 +98,4 @@ public class ChatFragment extends Fragment {
         fetchChatHistory();
     }
 
-    private ArrayList<Chat> setUpDummyArrayList(){
-        chatArrayList.add(new Chat("Regina Johnsons", "Hey Gina, have you done your CSC 411 assignment? It's really giving me a hard time."));
-        chatArrayList.add(new Chat("Chinonso Chukwudi", "I might come in to school pretty late today. I have a few emergencies to attend to."));
-        chatArrayList.add(new Chat("Sophia Jennings", "Can I get your note on Rete Algorithm? It's important."));
-
-        return chatArrayList;
-    }
 }

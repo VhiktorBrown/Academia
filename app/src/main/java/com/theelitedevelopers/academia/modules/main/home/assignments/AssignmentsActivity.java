@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.theelitedevelopers.academia.databinding.ActivityAssignmentsBinding;
+import com.theelitedevelopers.academia.modules.main.data.models.Announcement;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 import com.theelitedevelopers.academia.modules.main.home.assignments.adapters.AssignmentListAdapter;
 
@@ -42,21 +44,33 @@ public class AssignmentsActivity extends AppCompatActivity {
     }
 
     private void fetchAssignments(){
+//        database.collection("assignments")
+//                .orderBy("dateDue", Query.Direction.ASCENDING)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        if(!task.getResult().isEmpty()){
+//                            assignments.clear();
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                assignments.add(document.toObject(Assignment.class));
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                            }
+//                            adapter.setList(assignments);
+//                        }
+//                    } else {
+//                        Log.d(TAG, "Error getting documents: ", task.getException());
+//                    }
+//                });
+
         database.collection("assignments")
                 .orderBy("dateDue", Query.Direction.ASCENDING)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if(!task.getResult().isEmpty()){
-                            assignments.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                assignments.add(document.toObject(Assignment.class));
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                            adapter.setList(assignments);
+                .addSnapshotListener((value, error) -> {
+                    if(!value.getDocuments().isEmpty()) {
+                        assignments.clear();
+                        for (DocumentSnapshot documentSnapshot : value.getDocuments()) {
+                            assignments.add(documentSnapshot.toObject(Assignment.class));
                         }
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
+                        adapter.setList(assignments);
                     }
                 });
     }

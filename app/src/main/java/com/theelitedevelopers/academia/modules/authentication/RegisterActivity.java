@@ -5,10 +5,15 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,12 +24,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.theelitedevelopers.academia.core.data.local.SharedPref;
 import com.theelitedevelopers.academia.core.utils.AppUtils;
-import com.theelitedevelopers.academia.core.utils.Constants;
 import com.theelitedevelopers.academia.databinding.ActivityRegisterBinding;
 import com.theelitedevelopers.academia.modules.authentication.data.models.Student;
 import com.theelitedevelopers.academia.modules.main.MainActivity;
@@ -61,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
                 student.setHostel(hostel);
                 student.setDepartment("Computer Science");
                 student.setDateOfBirth("Mon, 04 Feb 2002 17:55:01");
-                student.setGender("Female");
+                student.setGender("Male");
                 student.setRep(false);
                 student.setPhoneNumber("0807635263");
                 student.setLevel("400 Level");
@@ -108,6 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
             studentMap.put("password", student.getPassword());
             studentMap.put("hostel", student.getHostel());
             studentMap.put("level", student.getLevel());
+            studentMap.put("rep", false);
             studentMap.put("phoneNumber", student.getPhoneNumber());
             studentMap.put("gender", student.getGender());
             studentMap.put("department", student.getDepartment());
@@ -140,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
         }
 
-        private String getToken(){
+        private void getToken(){
         final String[] token = {""};
             FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
@@ -151,17 +154,32 @@ public class RegisterActivity extends AppCompatActivity {
 
                     // Get new FCM registration token
                     token[0] = task.getResult();
-
+                    firebaseToken = token[0];
                     Log.d(TAG, token[0]);
-                    Toast.makeText(RegisterActivity.this, token[0], Toast.LENGTH_SHORT).show();
                 });
 
-            return token[0];
         }
 
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseToken = getToken();
+        getToken();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }

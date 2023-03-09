@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.theelitedevelopers.academia.databinding.ActivityAnnouncementsBinding;
 import com.theelitedevelopers.academia.modules.main.data.models.Announcement;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
+import com.theelitedevelopers.academia.modules.main.data.models.Chat;
 import com.theelitedevelopers.academia.modules.main.home.announcements.adapters.AnnouncementListAdapter;
 
 import java.util.ArrayList;
@@ -44,21 +46,33 @@ public class AnnouncementsActivity extends AppCompatActivity {
     }
 
     private void fetchAnnouncements(){
+//        database.collection("announcements")
+//                .orderBy("date", Query.Direction.DESCENDING)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        if(!task.getResult().isEmpty()){
+//                            announcements.clear();
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                announcements.add(document.toObject(Announcement.class));
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                            }
+//                            adapter.setList(announcements);
+//                        }
+//                    } else {
+//                        Log.d(TAG, "Error getting documents: ", task.getException());
+//                    }
+//                });
+
         database.collection("announcements")
                 .orderBy("date", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if(!task.getResult().isEmpty()){
-                            announcements.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                announcements.add(document.toObject(Announcement.class));
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                            adapter.setList(announcements);
+                .addSnapshotListener((value, error) -> {
+                    if(!value.getDocuments().isEmpty()) {
+                        announcements.clear();
+                        for (DocumentSnapshot documentSnapshot : value.getDocuments()) {
+                            announcements.add(documentSnapshot.toObject(Announcement.class));
                         }
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
+                        adapter.setList(announcements);
                     }
                 });
     }

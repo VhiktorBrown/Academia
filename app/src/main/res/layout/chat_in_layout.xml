@@ -41,7 +41,7 @@
             android:paddingBottom="@dimen/_10sdp"
             android:lineSpacingExtra="@dimen/_5sdp"
             android:fontFamily="@font/poppins_regular"
-            android:textColor="@color/white" />
+            android:textColor="@color/primary" />
 
         <TextView
             android:id="@+id/inbox_in_date"

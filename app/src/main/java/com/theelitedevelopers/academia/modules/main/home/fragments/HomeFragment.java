@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -30,6 +31,7 @@ import com.theelitedevelopers.academia.core.utils.Constants;
 import com.theelitedevelopers.academia.databinding.FragmentHomeBinding;
 import com.theelitedevelopers.academia.modules.authentication.LoginActivity;
 import com.theelitedevelopers.academia.modules.authentication.data.models.Student;
+import com.theelitedevelopers.academia.modules.main.data.models.Announcement;
 import com.theelitedevelopers.academia.modules.main.data.models.Assignment;
 import com.theelitedevelopers.academia.modules.main.home.adapters.DueAssignmentsAdapter;
 import com.theelitedevelopers.academia.modules.main.home.announcements.AnnouncementsActivity;
@@ -85,37 +87,40 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchAssignments(){
+//        database.collection("assignments")
+//                .orderBy("dateDue", Query.Direction.ASCENDING)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        if(!task.getResult().isEmpty()){
+//                            binding.noDataLayout.setVisibility(View.GONE);
+//                            dueAssignments.clear();
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                dueAssignments.add(document.toObject(Assignment.class));
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                            }
+//                            adapter.setList(dueAssignments);
+//                        }else {
+//                            binding.noDataLayout.setVisibility(View.VISIBLE);
+//                        }
+//                    } else {
+//                        Log.d(TAG, "Error getting documents: ", task.getException());
+//                    }
+//                });
+
         database.collection("assignments")
                 .orderBy("dateDue", Query.Direction.ASCENDING)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if(!task.getResult().isEmpty()){
-                            dueAssignments.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                dueAssignments.add(document.toObject(Assignment.class));
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                            adapter.setList(dueAssignments);
+                .addSnapshotListener((value, error) -> {
+                    if(!value.getDocuments().isEmpty()) {
+                        binding.noDataLayout.setVisibility(View.GONE);
+                        dueAssignments.clear();
+                        for (DocumentSnapshot documentSnapshot : value.getDocuments()) {
+                            dueAssignments.add(documentSnapshot.toObject(Assignment.class));
                         }
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
+                        adapter.setList(dueAssignments);
+                    }else {
+                        binding.noDataLayout.setVisibility(View.VISIBLE);
                     }
                 });
-    }
-
-    private void removeDataToSharedPref(){
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.ID);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.NAME);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.EMAIL);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.REG_NUMBER);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.DATE_OF_BIRTH);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.DEPARTMENT);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.HOSTEL);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.LEVEL);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.REP);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.PHONE_NUMBER);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.GENDER);
-        SharedPref.getInstance(requireActivity()).removeKeyValue(Constants.UID);
     }
 }

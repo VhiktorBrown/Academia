@@ -61,6 +61,8 @@ public class AddAnnouncementActivity extends AppCompatActivity {
         binding = ActivityAddAnnouncementBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        binding.goBack.setOnClickListener(v -> onBackPressed());
+
         binding.addAnnouncementButton.setOnClickListener(v -> {
             String assignmentTitle = binding.announcementTitle.getText().toString();
             String assignmentDescription = binding.announcementDescription.getText().toString();

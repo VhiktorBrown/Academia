@@ -86,38 +86,50 @@ public class ChatActivity extends AppCompatActivity {
         adapter = new ChatAdapter(this, chatArrayList, receiverUid);
         binding.inboxRecyclerView.setAdapter(adapter);
 
-        database.collection("chats")
-                .document(senderId)
-                .collection("messages")
-                .orderBy("date", Query.Direction.ASCENDING)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if(!task.getResult().isEmpty()){
-                            chatArrayList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                chatArrayList.add(document.toObject(Chat.class));
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                            adapter.setList(chatArrayList);
-                            if(chatArrayList.size() > 1){
-                                binding.inboxRecyclerView.smoothScrollToPosition(chatArrayList.size()-1);
-                            }
-                        }
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
-                    }
-                });
+        binding.goBack.setOnClickListener(v -> onBackPressed());
 
-//        database.collection("chats").document(senderId).collection("messages").
-//                addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//                        if(value != null && !value.isEmpty()){
-//                            value.forEach();
+//        database.collection("chats")
+//                .document(senderId)
+//                .collection("messages")
+//                .orderBy("date", Query.Direction.ASCENDING)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        if(!task.getResult().isEmpty()){
+//                            chatArrayList.clear();
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                chatArrayList.add(document.toObject(Chat.class));
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                            }
+//                            adapter.setList(chatArrayList);
+//                            if(chatArrayList.size() > 1){
+//                                binding.inboxRecyclerView.smoothScrollToPosition(chatArrayList.size()-1);
+//                            }
 //                        }
+//                    } else {
+//                        Log.d(TAG, "Error getting documents: ", task.getException());
 //                    }
 //                });
+
+        database.collection("chats").document(senderId).collection("messages")
+                .orderBy("date", Query.Direction.ASCENDING)
+                .addSnapshotListener((value, error) -> {
+                    assert value != null;
+                    if(!value.getDocuments().isEmpty()) {
+                        binding.noDataLayout.setVisibility(View.GONE);
+                        chatArrayList.clear();
+                        for (DocumentSnapshot documentSnapshot : value.getDocuments()) {
+                            Chat chat = documentSnapshot.toObject(Chat.class);
+                            chatArrayList.add(chat);
+                        }
+                        adapter.setList(chatArrayList);
+                        if(chatArrayList.size() > 1){
+                            binding.inboxRecyclerView.smoothScrollToPosition(chatArrayList.size()-1);
+                        }
+                    }else {
+                        binding.noDataLayout.setVisibility(View.VISIBLE);
+                    }
+                });
 
 
         binding.send.setOnClickListener(v -> {
@@ -153,8 +165,6 @@ public class ChatActivity extends AppCompatActivity {
                         .collection("messages")
                         .add(chatMap)
                         .addOnSuccessListener(documentReference1 -> {
-                            chatArrayList.add(chat);
-                            adapter.setList(chatArrayList);
                             Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference1.getId());
                             if(chatArrayList.size() > 0){
                                 binding.inboxRecyclerView.smoothScrollToPosition(chatArrayList.size()-1);

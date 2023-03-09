@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -90,21 +91,37 @@ public class ClassRepHomeFragment extends Fragment {
     }
 
     private void fetchAssignments(){
+//        database.collection("assignments")
+//                .orderBy("dateDue", Query.Direction.ASCENDING)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        if(!task.getResult().isEmpty()){
+//                            dueAssignments.clear();
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                dueAssignments.add(document.toObject(Assignment.class));
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                            }
+//                            adapter.setList(dueAssignments);
+//                        }
+//                    } else {
+//                        Log.d(TAG, "Error getting documents: ", task.getException());
+//                    }
+//                });
+
         database.collection("assignments")
                 .orderBy("dateDue", Query.Direction.ASCENDING)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if(!task.getResult().isEmpty()){
-                            dueAssignments.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                dueAssignments.add(document.toObject(Assignment.class));
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                            adapter.setList(dueAssignments);
+                .addSnapshotListener((value, error) -> {
+                    assert value != null;
+                    if(!value.getDocuments().isEmpty()) {
+                        binding.noDataLayout.setVisibility(View.GONE);
+                        dueAssignments.clear();
+                        for (DocumentSnapshot documentSnapshot : value.getDocuments()) {
+                            dueAssignments.add(documentSnapshot.toObject(Assignment.class));
                         }
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
+                        adapter.setList(dueAssignments);
+                    }else {
+                        binding.noDataLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }

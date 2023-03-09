@@ -5,10 +5,15 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -76,7 +81,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            binding.progressBar.setVisibility(View.GONE);
 
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
@@ -124,6 +128,11 @@ public class LoginActivity extends AppCompatActivity {
         studentMap.put("level", student.getLevel());
         studentMap.put("phoneNumber", student.getPhoneNumber());
         studentMap.put("gender", student.getGender());
+        if(student.getRep() != null){
+            studentMap.put("rep", student.getRep());
+        }else {
+            studentMap.put("rep", false);
+        }
         studentMap.put("department", student.getDepartment());
         studentMap.put("dateOfBirth", student.getDateOfBirth());
         studentMap.put("uid", student.getUid());
@@ -134,6 +143,8 @@ public class LoginActivity extends AppCompatActivity {
                 .document(student.getId())
                 .set(studentMap)
                 .addOnSuccessListener(documentReference ->{
+                    binding.progressBar.setVisibility(View.GONE);
+
                     AppUtils.Companion.saveDataToSharedPref(LoginActivity.this, student);
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finishAffinity();
@@ -157,7 +168,6 @@ public class LoginActivity extends AppCompatActivity {
                     firebaseToken = token[0];
 
                     Log.d(TAG, token[0]);
-                    Toast.makeText(LoginActivity.this, token[0], Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -182,5 +192,22 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
             finishAffinity();
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }
